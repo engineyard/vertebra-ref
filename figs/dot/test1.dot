@@ -1,0 +1,16 @@
+graph auth_agent {
+	node [shape=circle];
+	edge [dir=forward];
+	
+	start [label="" height=0.0 width=0.0 shape=circle];
+	request;
+	auth_fail [shape=doublecircle];
+	working;
+	done [shape=doublecircle];
+	
+	start -- request [label="op",dir="forward"];
+	request -- auth_fail [label="nak"];
+	request -- working [label=ack];
+	working -- working [label=result];
+	working -- done [label=final];
+}

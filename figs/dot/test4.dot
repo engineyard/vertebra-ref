@@ -1,0 +1,53 @@
+graph op_server {
+	collapse=true;
+	remincross=true;
+	overlap=scale;
+	splines=true;
+	constraint=true;
+
+	rankdir=LR;
+	node [shape=circle];
+	edge [dir=forward];
+	start=start;
+
+	start [label="" height=0.0 width=0.0];
+
+	new [shape=diamond];
+	verify [style=dotted];
+	deny [shape=diamond];
+	denied;
+	allow [shape=diamond];
+	work;
+	deliver;
+	error;
+	orphan;
+	fail;
+	failed;
+	flush;
+	done;
+	expire [shape=doublecircle];
+
+	start -- new [label="recv iq:N:set:op"];
+	new -- verify [label="send iq:N:res:op"];
+	verify -- orphan [label="recv iq:N:error"];
+	orphan -- expire [label="timeout"];
+	orphan -- new [label="recv iq:N:set:op"];
+	verify -- allow [label="herault yes"];
+	verify -- deny [label="herault no"];
+	deny -- denied ;
+	denied -- deny;
+	denied -- expire [label="timeout"];
+	allow -- work;
+	work -- deliver;
+	deliver -- work;
+	deliver -- flush;
+	flush -- done;
+	done -- expire;
+	work -- error;
+	error -- fail;
+	fail -- error;
+	fail -- failed;
+	failed -- expire;
+
+	label="Server Op State Machine";
+}

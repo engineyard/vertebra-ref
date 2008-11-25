@@ -1,0 +1,43 @@
+\newcommand{\agent}{{\sf agent}}
+\newcommand{\agents}{{\sf agents}}
+\newcommand{\Agent}{{\sf Agent}}
+\newcommand{\Agents}{{\sf Agents}}
+
+\section{Agents}
+
+\subsection{Agent Who?}
+
+\index[subject]{agents|(}
+While \actors{} are the fundamental unit of \textbf{code}, \agents\nomenclature{agent}{Vertebra's fundamental unit of deployment} are the fundamental unit of \textbf{deployment}.  A dizzying array of different issues must be managed when deploying code.  Most programmers are ill-equipped to address these issues.  They are primarily the domain of administrators.  By removing to need for these two groups to depend wholly on one another, we can reduce some of the mismatch that invariably must be overcome to implement a deployable system.
+
+The primary deployment issues we address are:
+
+\begin{itemize}
+	\item security
+	\item provisioning
+	\item configuration
+\end{itemize}
+
+Mixing the above needs with the actual code would only serve to interfere with the purpose of that code while giving a haphazard treatment to those same needs.  Vertebra neatly handles the above by grouping \actors{} into \agents{}, which have varying groups of \actor{} code, custom configuration, and an array of provisioning needs.
+
+\subsection{Your Papers Seem To Be In Order...}
+
+\Agents{} are where credentials first appear in Vertebra.  Controlling who runs a certain piece of code and what power they have over the system as a whole is critical.  The \agent{} is the beginning and end of identification.  With this single building block, we can express a wide variety of permissions and security roles.
+
+\subsection{Who Am I?}
+
+\Agents also provide the basic provisioning information that gives \actors{} context.  Without knowing where it is running, an \actor{} can't flexibly determine how it is supposed to operate.  The \agent{} level is where \actors{} are provided with this context.
+
+\subsection{What Do I Do?}
+
+Just because the \actors{} know how to handle a certain piece of equipment doesn't mean that they can magically infer everything necessary.  The \agent{} also can provide a base-level of configuration that doesn't make sense to anyone else.
+
+\subsection{Why Here?}
+
+I can hear the sound of thousands of administrators quaking in fear.  Many of them have a love (or even obsession) with provisioning, securing, and configuring centrally over the network.  The thought is that this eases administration by centralizing those concerns.
+
+In the Cloud, we have discovered that this centralization is directly at odds with reliability and scalability.  Anyone who has witnessed the carnage when database servers or authentication servers go offline will appreciate that some things should be configured locally.  This level of configuration allows you to do so--which should, in turn, allow your system to make a best-effort in the event of catastrophe.  Similarly, you'll never have to worry about scaling or replicating your LDAP server or RADIUS server.
+
+That said, Vertebra does provide a central configuration store in Entrep\^ot.  While we would love for all of your critical configuration to go there, we recognize that some information just makes sense at the leaves of your network, not somewhere in the center.  Our core data storage specification is detailed later\footnote{see page \pageref{ref:core-data-storage}}.
+
+\index[subject]{agents|)}

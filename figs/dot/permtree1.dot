@@ -1,0 +1,39 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0];
+  node [shape=box];
+  edge [dir=back];
+  
+  {
+    rank=same;
+    
+    customer;
+  };
+  
+  {
+    rank=same;
+    
+    slice_mgr;
+    reboot_perm {label="/sys/reboot"};
+  };
+  
+  {
+    rank=same;
+    
+    bobco_slice_mgr;
+    jimco_slices_mgr;
+  };
+  
+  {
+    rank=same;
+    
+    bobco;
+  };
+  
+  {
+    rank=same;
+    
+    jimco;
+  };
+  
+  customer 
+};

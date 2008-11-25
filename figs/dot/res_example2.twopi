@@ -1,0 +1,67 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0,overlap=false,splines=true];
+  node [shape=ellipse];
+  edge [];
+
+  root [label="Everything"];
+  citizen [label="Citizen Of"];
+  philosophy [label="School of Philosophy"];
+  service [label="Provides Service"];
+  speaker [label="Speaks Language"];
+
+  greece [label="Greece"];
+  athens [label="City of Athens"];
+  sicily [label="Kingdom of Sicily"];
+  prussia [label="Kingdom of Prussia"];
+  rome [label="Roman Empire"];
+
+  aristotelianism [label="Aristotelianism"];
+  classical_greek [label="Classical Greek"];
+  peripatetic [label="Peripatetic School"];
+  scholasticism [label="Scholasticism"];
+  stoic [label="Stoic"];
+  weimar_classicism [label="Weimar Classicism"];
+
+  german [label="German"];
+  greek [label="Greek"];
+  italian [label="Italian"];
+  latin [label="Latin"];
+
+  lawyer [label="Lawyer"];
+  orator [label="Orator"];
+  philosopher [label="Philosopher"];
+  political_theorist [label="Political Theorist"];
+  statesman [label="Statesman"];
+  stonemasonry [label="Stonemasonry"];
+  theologian [label="Theologian"];
+
+  root -- citizen;
+  root -- philosophy;
+  root -- service;
+  root -- speaker;
+
+  citizen -- greece -- athens;
+  citizen -- sicily;
+  citizen -- prussia;
+  citizen -- rome;
+
+  philosophy -- aristotelianism;
+  philosophy -- classical_greek;
+  philosophy -- peripatetic;
+  philosophy -- scholasticism;
+  philosophy -- stoic;
+  philosophy -- weimar_classicism;
+
+  speaker -- german;
+  speaker -- greek;
+  speaker -- italian;
+  speaker -- latin;
+
+  service -- lawyer;
+  service -- orator;
+  service -- philosopher;
+  service -- political_theorist;
+  service -- statesman;
+  service -- stonemasonry;
+  service -- theologian;
+};

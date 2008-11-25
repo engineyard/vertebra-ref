@@ -1,0 +1,68 @@
+graph op_client {
+	overlap=scale;
+	splines=true;
+	rankdir=LR;
+	
+	node [shape=circle];
+	edge [dir=forward];
+	start=start;
+
+	start [label="" height=0.0 width=0.0];
+
+	new [shape=diamond];
+	retry;
+	allowed [shape=diamond];
+	denied [shape=diamond];
+	incoming;
+	ping [shape=diamond];
+	pong;
+	confirm [shape=diamond];
+	error [shape=diamond];
+	fail;
+	failing [shape=diamond];
+	failed;
+	final [shape=diamond];
+	done;
+	errored;
+	expired [shape=doublecircle];
+	
+	start -- new;
+	new -- retry [label="send iq:A:set:op"];
+	retry -- new [label="timeout"]
+	retry -- retry [label="recv iq:A:error"]
+	retry -- retry [label="recv iq:A:res:op"];
+	retry -- denied [label="recv iq:N:set:nack:job"];
+	denied -- retry [label="send:iq:N:res:nack:job"]
+	denied -- retry [label="recv:iq:N:error:nack:job"]
+	retry -- allowed [label="recv iq:Y:set:ack:job"];
+	allowed -- incoming [label="send iq:Y:res:ack:job"];
+	incoming -- allowed [label="recv iq:Y:res:ack:job"];
+	incoming -- denied [label="recv iq:Y:error"];
+	incoming -- confirm [label="recv iq:B*:set:result:job:data"];
+	confirm -- incoming [label="send iq:B*:res:result:job"];
+	incoming -- final [label="recv iq:F:set:final:job"];
+	final -- done [label="send iq:F:res:final:job"];
+	done -- final [label="recv iq:F:res:final:job"]
+	final -- final [label="recv iq:F:error:final:job"]
+	incoming -- ping [label="timeout"];
+	ping -- pong [label="send iq:P:set:ping"];
+	pong -- incoming [label="recv iq:P:res:ping"];
+	pong -- fail [label="recv iq:P:error:ping"];
+	pong -- fail [label="timeout"];
+	fail -- fail [label="recv iq:P:error:ping"];
+	fail -- failing [label="recv iq:Z:set:result/final"];
+	failing -- failed [label="send iq:Z:error"];
+	failed -- error;
+	fail -- expired [label="timeout"];
+	incoming -- error [label="recv iq:E:set:job:error"];
+	incoming -- fail [label="recv iq:B*:error"];
+	error -- errored [label="send iq:E:res:job:error"];
+	errored -- failed [label="recv iq:B*:error"];
+	errored -- failed [label="recv iq:F:final"];
+	errored -- errored [label="recv iq:E:res:job:error"];
+	errored -- errored [label="recv iq:E:error:job:error"];
+	errored -- expired [label="timeout"];
+	done -- expired [label="timeout"];
+
+	label="Client Op State Machine";
+}

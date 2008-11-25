@@ -1,0 +1,30 @@
+\section{Discovery}
+
+\index[subject]{discovery|see{resources}}
+\index[subject]{resources!discovery of|(}
+
+\subsection{The Unique Issues of the Cloud}
+
+Now that we have built a flexible system for representing the \resources{} that matter to our applications, it is important to be able to work with them.  This is where the Cloud diverges from most programming endeavors.  On the smaller scale, most programmers spend much of their time fighting with how their data is represented.
+
+Holy wars are waged over such cherished technologies as relational databases, document schemas, object-relational mappers, and interchange formats.  \Resources{} allow Vertebra to be fairly agnostic to these issues.  We don't care what you are exchanging, we just want to help it get there.
+
+\subsection{The Cloud Makes ``Where?'' Hard}
+
+That brings up the unique problem of scaling.  In a large enough deployment, it is very expensive to have anything centralized.  Most people focus on making increasingly efficient centralized components--hoping to push off the scalability problems as far as possible.  In Vertebra, we accept that you may or may not be centralized, but that your primary concern is locating that data--or service, or employee.  \Resources{} save the day in that respect.
+
+For this to be useful, Vertebra provides a facility called ``discovery''.  Discovery allows you to ask for some group of agents by giving their fingerprint as a set of resources.  Vertebra will then handle distributing your request to all of the appropriate places for it to go.
+
+\subsection{Scatter-Gather Computing}
+
+To make this work, \agents{} advertise their membership in the groups for which their \actors{} provide \resources{}.  This makes it possible for any requesters to discover the other \agents{} in the cloud that can fulfill their requests.  With discovery, it's easy to spread out data by discovering the destination (i.e. \emph{push} or \emph{scatter}).  Conversely, it's also easy to collect data by discovering the source (i.e. \emph{pull} or \emph{gather}).  In this way it is possible to offer facilities similar to ``publish-subscribe'' systems, but potentially with services instead of data---potentially even for legacy services that are otherwise difficult to integrate with such systems.
+
+\subsection{Discovering A Teller}
+
+TODO: Provide an extension of the bank example that illustrates discovery.  Possibly do so by putting a bank example in the resources section, to give a more comprehensive example set.
+
+\subsection{The Discovery Process}
+
+Just like ``advertising'', the specifics of ``discovery'' will be deferred until \ref{ref:direct-ops}.  In the same vague language used before, the \agent{} sends a message to the Vertebra security agent requesting another \agent{} which offers the appropriate \resources{}.
+
+\index[subject]{resources!discovery of|)}

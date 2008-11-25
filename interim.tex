@@ -1,0 +1,42 @@
+\documentclass{article}
+
+\usepackage{amsfonts} % Math Fonts
+\usepackage[linktocpage]{hyperref} % Hyperlinks
+\usepackage{graphicx} % Figures
+\usepackage{index}    % Indexes
+\usepackage[refpage,intoc]{nomencl} % Glossary
+\usepackage{multirow} % Row-Spanning in Tabular Context
+\usepackage{verbatim} % Comment Environment
+
+% Set Up Main Index and Glossary
+\newindex{tech}{tdx}{tnd}{Technology Index}
+\newindex{subject}{idx}{ind}{Subject Index}
+\makenomenclature
+
+% Handy Definitions
+\newcommand{\myfigwidth}{\textwidth}
+\newcommand{\myfigheight}{2in}
+
+% Now for the document
+\begin{document}
+
+% No Headers Until Actual Content
+\pagestyle{empty}
+
+\input{ititle} % Title Page
+
+% Set Page Style For Headings
+\cleardoublepage
+\pagestyle{headings}
+
+\input{concepts/actors}
+\input{concepts/agents}
+\input{concepts/resources}
+\input{concepts/discovery}
+\input{concepts/op/intro}
+\input{concepts/op/scope}
+\input{concepts/op/direct}
+\input{concepts/op/general}
+\input{concepts/datastore}
+
+\end{document}

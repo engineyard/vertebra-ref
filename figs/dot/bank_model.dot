@@ -1,0 +1,32 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0];
+  node [shape=box];
+  edge [dir=back];
+
+  person;
+
+  {
+    rank=same;
+    
+    teller;
+    customer;
+  };
+
+  {
+    rank=same;
+    
+    bob [label="Bob"];
+    jim [label="Jim"];
+    jill [label="Jill"];
+    
+    
+  };
+  
+  person -- teller;
+  person -- customer;
+  
+  teller -- bob;
+  teller -- jim;
+  customer -- jim;
+  customer -- jill;
+}

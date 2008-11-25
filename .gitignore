@@ -1,0 +1,17 @@
+*.toc
+*.lot
+*.lof
+*.aux
+*.log
+*.ind
+*.ilg
+*.idx
+*.nlo
+*.nls
+*.out
+*.tdx
+*.tnd
+*~
+#*#
+.DS_Store
+*.tmproj

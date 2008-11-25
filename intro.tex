@@ -1,0 +1,36 @@
+\chapter{Introduction}
+
+\section*{Identifying the Problem}
+
+While the section on use cases covers the specifics, I feel it's important to briefly describe the nature of the problem that Vertebra tries to solve.
+
+As anyone who has had to do so will tell you, writing a program is easy; writing a fast program is harder; writing a scalable program is even harder; and writing a fast and scalable program is downright difficult.  If the only people we ever asked were programmers, that would be the only breakdown that you would probably see.
+
+However, there is an unfortunate class of people that have to deal with programs after they've been written.  While every programmer would like to believe that their programs are all beautiful works of art, a number of operators and administrators out there would disagree.
+
+Thus, Vertebra is not about making a framework that merely solves the problem of making scalable program.  Rather, Vertebra is about making scalable programs manageable.  
+
+\section*{Identifying the Tradeoff}
+
+Like most programming endeavors, Vertebra has been a balancing act between a desire for simplicity and a desire for correct behavior.  While it can sometimes take a lot of work to get it just right, we've come to appreciate that no aspect of a system matters if it doesn't work correctly.  We've gone so far as to claim that we can maybe even make it work correctly through terrible hardships.
+
+This makes sense because, in a systems environment.  When a network is failing, or a system disappears, almost all metrics of system performance mean little---\emph{still working}, however, means a lot.  Handling failures gracefully and being able to scale are infinitely more important to a successful application.
+
+With that in mind, we've focused on making Vertebra scalable and functionally correct.  We've also identified some behavior we'd like to avoid.  In fact, Vertebra is sometimes more interesting for what it doesn't do that what it does do.  Again, this largely considers failure scenarios.  While this might seem pessimistic, the presence of the Service Level Agreement as a cornerstone of hosting agreements underscores its wisdom.
+
+\section*{Cloud Glue}
+
+Given the problem of making scalability manageable, and the understanding that our focus is on administrators, it made sense to think of Vertebra as middleware between various heterogenous systems.  In terms of Cloud Computing architectures, or perhaps almost any computing framework, management is typically an afterthought.  This is unfortunate, since management tools are commonly a critical deliverable.
+
+Functionally, Vertebra provides the ``glue'' that holds your various clouds together.  Like any good glue, it is designed to be able to fit into the nooks and crevices in your infrastructure.  Once applied, it should hold your systems together with a durable bond.
+
+It is our sincere hope that, with this abstraction in place, it will become easier to re-factor things at an organizational level.  This is commonly an area where most programmers aren't allowed to tread.  It is perhaps where most administrators have the fewest options, as well.
+
+\section*{Vertebra's Ultimate Purpose}
+
+By itself, Vertebra does almost nothing especially innovative.  The power comes from the code that is plugged into it and the encrusted systems that it makes accessible.  While this could be said of any framework, we like to think that the model we've made is useful for organizing and orchestrating everything else you have to work with.  In fact, we put it together in these ways because we couldn't quite find anything that worked the way Vertebra does.
+
+The primary concern that consumes the lives of many administrators, programmers, and managers is \emph{integration}.  As the Cloud scales the number of integration points, it's inevitable that it will consume that many generations of support staff as well.  Vertebra is designed to give those people at least some of their life back.  It's designed to put the focus on integration, normalizing the management of your infrastructure, and growing it flexibly.
+
+The greatest strides in managing technology projects have recently come from the renewed appreciation that human-time is the most expensive aspect of technology.  We hope that Vertebra will do for these workers what dynamic languages have done for programmers.  In that way, we hope that Vertebra will be revolutionary---or, at least, evolutionary.
+

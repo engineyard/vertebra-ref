@@ -1,0 +1,13 @@
+\chapter{Preface}
+
+Vertebra, like so many projects, started with very humble beginnings. In beginning mid-2006, Tom, Lance, Ezra, and I founded Engine Yard\footnote{A quite successful Ruby-focused Hosting Provider turned Technology Company, \url{http://www.engineyard.com}}. We had just finished combining emerging virtualization\footnote{Xen, to be specific, \url{http://www.xensource.com}\index[tech]{Xen}} and clustering technologies\footnote{Redhat Cluster Suite\index[tech]{Redhat Clustering Suite (RHCS)}, \url{http://www.redhat.com/cluster_suite/}} into a rather impressive little clustered hosting platform.
+
+We were in a place where all too many people had been before. We had built an incredibly dense system, but it was quite fault tolerant.  Any system built to manage it needed to be equally fault tolerant.  While fault tolerant systems and fault tolerant management tools are rare, the latter is virtually nonexistent.  There was certainly nothing in our price range.
+
+At the time, I was fresh off helping a good friend of mine with the occasional management and architecture for his one-man ISP. Similarly, my recent work had been providing support services for a wide array of customers that each had relatively small but heterogenous IT deployments. Even before that, I was managing large networks for pretty much the previous decade.
+
+With these experiences fresh on my mind, I immediately knew that we couldn't just manage it all by hand. I knew that if we did try, we would all soon succumb to a series of grisly mental disorders. As luck would have it, Tom was also a fan of automated deployment\footnote{He wrote the book on Capistrano\index[tech]{Capistrano}, \url{http://www.capify.org/}} and was friends with enough people in the hosting business to recognize the issue. Ezra, too appreciated the trouble that automating a system can be.  Lance, well, he's the CEO and he knows that we have this sort of stuff covered.
+
+With the founders in agreement and appropriate trepidation, we began discussing exactly what features we would like from a sensible system for automating our clusters. As the project progressed, it became clear that what we had in mind didn't particularly exist yet. It also became clear that it was applicable to a much larger set of problems than mere systems automation. Thus, Vertebra was born.
+
+Insomuch as it has automated our systems, Vertebra has been effective, albeit a bit behind schedule. However, I hope that it is clear in the design of this wonderful architecture that it was worth the wait.

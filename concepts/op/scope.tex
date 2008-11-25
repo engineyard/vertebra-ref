@@ -1,0 +1,24 @@
+\section{Scope}
+
+\subsection{Selecting Agents}
+
+\index[subject]{scope|see{operations}}
+\index[subject]{operations!scope|(}
+
+Exactly which agents are selected for an \operation{} is determined by the \resources{} in the \operation{} and the \scope{}.  Thus, \scope{} determines the behavior of \textbf{agent selection} in Vertebra.  While it may not be initially obvious, different modes of selection provide the building blocks for implementing a number of useful scenarios which are detailed later.
+
+\subsection{Single Scope}
+
+\index[subject]{operations!scope!single}
+The simplest \scope{} that Vertebra provides is the \single{} \scope{}. The purpose of the \single{} \scope{} is to ensure that the \operation{} is executed by exactly one \actor{}, exactly once, somewhere in the Cloud.
+
+To dispatch a \single{} scoped \operation{}, the client code discovers \agents{} capable of providing it, then randomly iterate through them.  Each iteration, the \operation{} is dispatched to the selected \agent{}.  If it executes, iteration stops.  If it can't perform the operation, iteration continues to the next \agent{}.  If all \agents{} refuse the \operation{}, the \operation{} blocks and retries at a later point.
+
+\subsection{All Scope}
+
+\index[subject]{operations!scope!all}
+The next \scope{} that Vertebra provides is the \all{} \scope{}.  The purpose of the \all{} \scope{} is to ensure that the \operation{} is executed by as many \actors{} as can be reached in the Cloud.
+
+To dispatch an \all{} scoped \operation, the client code discovers \agents{} capable of providing it, then dispatches to all of them simultaneously.  Any or all of the \operations{} could fail.  It may even be that no \agents{} provide the \operation{}.
+
+\index[subject]{operations!scope|)}

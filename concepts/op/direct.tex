@@ -1,0 +1,19 @@
+\section{Direct Operations}
+
+\label{ref:direct-ops}
+\index[subject]{operations!direct|(}
+\index[subject]{direct operation|see{operations}}
+
+\subsection{The Chicken and the Egg}
+
+Given all of the talk of discovery and dispatch, there is an exception to those rules.  There are some cases where discovery is not necessary or possible.  The primary case we're concerned with is the \operations{} of advertisement and discovery themselves.
+
+Rather than building a special protocol for doing these \operations, we just use the normal \operation{} behavior, without the discovery step.  We call these ``direct'' \operations{}.
+
+\subsection{Scope In Direct Operations}
+
+\index[subject]{operations!direct!scope in}
+
+Scope in a direct \operation{} is almost unused.  The only aspect of scope that is important is the completion semantics.  That is, for \single{} scope, the operation must be dispatched to exactly one actor, but the \all{} scope, zero or more actors may handle a request.
+
+\index[subject]{operations!direct|)}

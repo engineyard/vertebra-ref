@@ -1,0 +1,56 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0];
+  node [shape=box];
+  edge [dir=back];
+  
+  vm1_agent [label="agent-vm1@cloud" shape=ellipse];
+  vm2_agent [label="agent-vm2@cloud" shape=ellipse];
+  vm3_agent [label="agent-vm3@cloud" shape=ellipse];
+  //vm4_agent [label="agent-vm4@cloud" shape=ellipse];
+  
+  vm1 [label="Virtual Machine 1"];
+  vm2 [label="Virtual Machine 2"];
+  vm3 [label="Virtual Machine 3"];
+  //vm4 [label="Virtual Machine 4"];
+  
+  vm_bobco [label="BobCo Virtual Machines"];
+  vm_jimco [label="JimCo Virtual Machines"];
+  vm_all [label="Virtual Machines"];
+   
+  user_bob [label="bob@bobco" shape=ellipse];
+  user_jim [label="jim@jimco" shape=ellipse];
+  
+  cust_bobco [label="Customer BobCo"];
+  cust_jimco [label="Customer JimCo"];
+  cust_all [label="Customers"];
+  
+  user_all [label="Users"];
+  
+  adm_all [label="Administrators"];
+  adm_ey [label="admin@ey" shape=ellipse];
+  
+  op_reboot [label="Reboot"];
+  op_all [label="Operations"];
+  
+  cust_all -- cust_bobco;
+  cust_all -- cust_jimco;
+  cust_bobco -- user_bob [style=dotted];
+  cust_jimco -- user_jim [style=dotted];
+  user_all -- cust_all;
+  user_all -- adm_all;
+  adm_all -- adm_ey [style=dotted];
+  
+  vm_all -- vm1;
+  vm_all -- vm2;
+  vm_all -- vm3;
+  vm1 -- vm1_agent [style=dotted];
+  vm2 -- vm2_agent [style=dotted];
+  vm3 -- vm3_agent [style=dotted];
+  
+  vm_bobco -- vm1;
+  vm_bobco -- vm2;
+  
+  vm_jimco -- vm3;
+  
+  op_all -- op_reboot;
+}

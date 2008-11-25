@@ -1,0 +1,29 @@
+% Was breaking TOC on Index, Hopefully This Is Okay.
+\backmatter
+
+\part*{Glossary and Indexes}
+\pagestyle{empty}
+
+% Glossary
+%\cleardoublepage
+%\phantomsection 
+%\addcontentsline{toc}{chapter}{Glossary of Terms}
+\renewcommand{\nomname}{Glossary of Terms}
+\printnomenclature
+\cleardoublepage
+
+% Technology Index
+%\cleardoublepage
+%\phantomsection 
+%\addcontentsline{toc}{chapter}{Technology Index}
+\printindex[tech]
+\cleardoublepage
+
+% Subject Index
+%\cleardoublepage
+%\phantomsection 
+%\addcontentsline{toc}{chapter}{Subject Index}
+\printindex[subject]
+\cleardoublepage
+
+\end{document}

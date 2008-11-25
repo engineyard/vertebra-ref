@@ -1,0 +1,23 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0,overlap=false,splines=true];
+  node [shape="circle"];
+  edge [dir=forward weight="0.0" style="dashed"];
+
+  rankdir="TB";
+
+  c_start [label="" shape="circle" height=0 width=0 fixedsize=true];
+  c_new;
+  c_authwait;
+
+  net_op_set;
+  net_op_res;
+
+  s_new;
+
+  c_start -- c_new [style="invis"];
+  c_new -- net_op_set -- s_new -- net_op_res -- c_authwait;
+
+  c_start -- c_new -- c_authwait -- c_running -- c_done [style="solid" weight="1.0"];
+  s_new -- s_auth -- s_ready -- s_running -- s_final [style="solid" weight="1.0"];
+  net_op_set -- net_op_res -- net_ack_set -- net_ack_res -- net_data_set -- net_data_res -- net_final_set -- net_final_res [style="solid" weight="1.0"];
+};

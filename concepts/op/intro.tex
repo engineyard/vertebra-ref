@@ -1,0 +1,21 @@
+\newcommand{\operation}{{\sf operation}}
+\newcommand{\operations}{{\sf operations}}
+\newcommand{\Operation}{{\sf Operation}}
+\newcommand{\Operations}{{\sf Operations}}
+
+\newcommand{\scope}{{\sf scope}}
+\newcommand{\scopes}{{\sf scopes}}
+\newcommand{\Scope}{{\sf Scope}}
+\newcommand{\Scopes}{{\sf Scopes}}
+
+\newcommand{\single}{{\sf single}}
+\newcommand{\Single}{{\sf Single}}
+
+\newcommand{\all}{{\sf all}}
+\newcommand{\All}{{\sf All}}
+
+\section{Overview}
+
+Now that we have a number of useful abstractions, it's time to do something with them.  For this purpose, Vertebra has \operations{}.  The \operation{} is the fundamental unit of \textbf{work} in Vertebra.  At any instant, they tie the pieces together to make something happen.
+
+Specifically, when an \operation{} is issued, the system discovers \agents{} that offer the appropriate \resources{}, then operation is dispatched to those \agents{}.  The \agents{} further dispatch the \operations{} to the appropriate \actors{} which actually do the work.  Finally, the responses stream back to the \agent{} that made the request for the \operation{}.

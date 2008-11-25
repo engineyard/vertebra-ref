@@ -1,0 +1,58 @@
+\section{Core Data Storage}
+
+\subsection{Requirements}
+
+\label{ref:core-data-storage}To orchestrate services in the cloud, information of a certain character must be stored and queried.  A data store for Vertebra needs to have a few characteristics:
+
+\begin{itemize}
+	\item it should be fault-tolerant
+	\item it should be horizontally scalable
+	\item it should be keyed similarly to operation discovery
+	\item it should have values that easily adapt to become input to operations
+	\item it should have a versioning capability
+\end{itemize}
+
+The Vertebra implementation provides a data store with these properties\footnote{TODO: versioning isn't done yet.} in the form of Entrep\^ot.
+
+\subsection{Data Format}
+
+Entrep\^ot is, at the highest level, a hash-table.  It simply maps keys to values.  The structure of these keys and values are such that they fit well into the rest of the Vertebra system.
+
+\subsubsection{Keys}
+
+Keys are made up of sets of \resources{}.  This allows for records to be discovered in a similar way that \agents{} are discovered.
+
+\subsubsection{Values}
+
+Values are exactly the same structure as the parameters to an operation.  Functionally they are equivalent to a mapping of parameter keys to values.
+
+\subsubsection{Records}
+
+Each mapping is called a record.  Records are represented as a hash containing:
+
+\begin{description} 
+	\item[keys] which maps to a mapping of key names to \resources{}
+	\item[values] which maps to a mapping that holds whatever data is being stored
+\end{description}
+
+\subsection{Operations}
+
+\subsubsection{Store}
+
+To store a value in an Entrep\^ot data store, do an operation of type ``store'' with scope \single{}.  This guarantees that exactly one copy of the entry is stored.  The parameter mapping for this operation should be the record.
+
+To delete a value in Entrep\^ot, store an empty value.  If a record is replaced (or deleted), the previous record is returned as data.
+
+\subsubsection{Fetch}
+
+To retrieve a value, there are two options depending on the type of query you're attempting.
+
+To find all records which have a key that contains the query keys, use an \operation{} of type ``fetch\_superset''.  To find all records which have a key that is contained by the query keys, use an \operation{} of type ``fetch\_subset''.  In either case, the queries should be made with a parameter named ``keys''.
+
+The data returned will consist of a mapping containing records of the form used in the Store \operation{}.
+
+\subsection{Caveats}
+
+Entrep\^ot makes its best effort to update and delete values.  However, it is not currently completely resilient.  This will be addressed later when versioning is supported.  The current shortcomings are mostly of concern in federated settings where there is a significant likelihood that communication between two servers is significant.
+
+Provisioning is also a concern, since an Entrep\^ot \agent{} will not be discovered unless it contains resources for all of the keys in a request.  This should be handled by direct \operations{} for the initial store.

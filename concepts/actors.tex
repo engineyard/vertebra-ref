@@ -1,0 +1,46 @@
+\newcommand{\actor}{{\sf actor}}
+\newcommand{\actors}{{\sf actors}}
+\newcommand{\Actor}{{\sf Actor}}
+\newcommand{\Actors}{{\sf Actors}}
+
+\section{Actors}
+
+\subsection{Who Are These Actors?}
+
+\index[subject]{actors|(}
+Since Vertebra is about glueing systems together, it is fairly critical to be able to codify and describe exactly what things your are putting together.  With that in mind, an \actor{}\nomenclature{actor}{Vertebra's fundamental unit of code} is the fundamental unit of \textbf{code} in Vertebra.  More colloquially, they are ``where the rubber hits the road''.
+
+Each \actor{} offers various operations that can be done on certain resources.  How exactly this is done is formalized in later chapters.
+
+\subsection{All The World Is A Stage...}
+
+Let's take an example of a bank.  This is a fairly complex organization with many systems in need of management.  Ignoring the higher-level administration of those systems, there are many pieces of code that will directly interface with a number of other systems at a much lower level.  Table \ref{tbl:bank-actors} gives a number of example actors.
+
+\begin{table}
+	\begin{center}
+		\begin{tabular}{|p{0.35\textwidth}|p{0.55\textwidth}|}
+			\hline Actor & Description \\
+			\hline
+			\hline WidgetTek Drawer Actor & Operates the bank's WidgetTek-brand cash drawers \\
+			\hline SprocketInc Drawer Actor & Operates the bank's SprocketInc-brand cash drawers \\
+			\hline Vault Actor & Operates the bank's vault control mechanism \\
+			\hline Check Reader Actor & Operates the bank's check readers \\
+			\hline ACH Dial-In Actor & Operates dial-in lines used by the bank's merchant services credit card machines \\
+			\hline ATM Actor & Controls secure leased lines to various ATMs \\
+			\hline Ledger Access Actors & Provides access to systems that handle and distribute ledger data throughout the bank \\
+			\hline Optical Storage Actor & Provides access to optical storage used for archiving check scans and bank records \\
+			\hline Alarm System Actor & Interfaces with security alarm \\
+			\hline Collect-o-matic Actor & Interfaces with an IVR system that harasses delinquent loan customers \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Example Actors In A Bank}
+	\label{tbl:bank-actors}
+\end{table}
+
+This list of \actors{} is obviously fanciful and incomplete, but it should indicate that the focus of \actors{} is the programmer.
+
+It is worth noting that, just like real-world code, sometimes two \actors{} perform the same function for different pieces of equipment.  This is intentional and should make \actors{} the natural point to create consistent interfaces.  It is our belief that this aids in refactoring as well, since it keeps the focus on making access similar resources uniform.
+
+Whatever way makes sense for a programmer to encapsulate the code that really does the work, can be factored into \actors{}.  This is where all of the concerns about where code runs or how it works is addressed.  This is where it is necessary to deal directly with the vagaries of hardware access, user interfaces, and all of the details that crop up in a large system.  The rest of Vertebra handles knitting them together at a much higher level.
+\index[subject]{actors|)}

@@ -1,0 +1,21 @@
+graph {
+  graph [size="5,4",ratiopress,margin=0.0,overlap=false,splines=true,rankdir="LR"];
+  node [shape="circle"];
+  edge [dir=forward];
+
+  start [label="" shape="circle" height=0 width=0 fixedsize=true];
+  new;
+  ack;
+  run;
+  nack   [shape="doublecircle"];
+  failed [shape="doublecircle"];
+  done   [shape="doublecircle"];
+
+  start -- new;
+  new -- ack [label="authorized"];
+  new -- nack [label="not authorized"];
+  ack -- run [label="started"];
+  run -- run [label="data"];
+  run -- done [label="final"];
+  run -- failed [label="error"];
+}
