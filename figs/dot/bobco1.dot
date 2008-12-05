@@ -1,3 +1,4 @@
+// Copyright 2008, Engine Yard, Inc.
 graph {
   graph [size="5,4",ratiopress,margin=0.0];
   node [shape=box];

@@ -1,3 +1,4 @@
+// Copyright 2008, Engine Yard, Inc.
 graph auth_agent {
 	node [shape=circle];
 	edge [dir=forward];

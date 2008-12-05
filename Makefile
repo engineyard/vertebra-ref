@@ -1,3 +1,4 @@
+# Copyright 2008, Engine Yard, Inc.
 CORE=*.tex
 COMPONENTS=components/*.tex
 FIGS=$(patsubst %.twopi,%.pdf,$(wildcard figs/dot/*.twopi)) \

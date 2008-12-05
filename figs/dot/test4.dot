@@ -1,3 +1,4 @@
+// Copyright 2008, Engine Yard, Inc.
 graph op_server {
 	collapse=true;
 	remincross=true;
