@@ -1,10 +1,14 @@
 # Copyright 2008, Engine Yard, Inc.
 CORE=*.tex
 COMPONENTS=components/*.tex
-FIGS=$(patsubst %.twopi,%.pdf,$(wildcard figs/dot/*.twopi)) \
-     $(patsubst %.neato,%.pdf,$(wildcard figs/dot/*.neato)) \
-     $(patsubst %.dot,%.pdf,$(wildcard figs/dot/*.dot)) \
-     figs/png/*.png
+twopi_files=$(wildcard figs/dot/*.twopi)
+neato_files=$(wildcard figs/dot/*.neato)
+dot_files=$(wildcard figs/dot/*.dot)
+png_files=figs/png/*.png
+FIGS=$(patsubst %.twopi,%.pdf,$(twopi_files)) \
+     $(patsubst %.neato,%.pdf,$(neato_files)) \
+     $(patsubst %.dot,%.pdf,$(dot_files)) \
+     $(png_files)
 CONCEPTS=concepts/*.tex concepts/*/*.tex
 MATH=math/*.tex
 PROTO=proto/*.tex
@@ -13,6 +17,8 @@ USE=use/*.tex
 noinst_DATA=vertebra.pdf interim.pdf
 
 CLEANFILES=$(noinst_DATA)
+EXTRA_DIST = $(CORE) $(COMPONENTS) $(CONCEPTS) $(MATH) $(PROTO) $(USE) \
+	$(twopi_files) $(neato_files) $(dot_files) $(png_files)
 
 all-local:
 	$(MAKE) clean_intermediate
