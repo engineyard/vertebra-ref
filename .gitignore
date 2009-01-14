@@ -23,3 +23,7 @@ config.status
 configure
 install-sh
 missing
+COPYING
+INSTALL
+interim.pdf
+vertebra.pdf

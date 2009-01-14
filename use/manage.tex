@@ -121,15 +121,21 @@ In this particular case, there is no combination of permissions that can allow J
 
 \paragraph{Description}
 
-{\Large TODO:} Just like permissions, configuration can come from above.
+One of the biggest difficulties in constructing the policy for a system is that there is rarely just one policy being considered.  The configuration for any individual point in your cloud might be determined by departmental policies, regional concerns, local concerns, organization-wide defaults, and issues pertaining to the specific point of deployment.
 
-paragraph{Discussion}
+Rather than place the onus on the system administrator to handle this sometimes arduous task, we should provide tools to gracefully compose the varying configurations needed.
 
-{\Large TODO}
+\paragraph{Discussion}
+
+In the final analysis, configuration typically takes the form of some simple series of values, identified by some set of keys.  Many times this is modeled as an associative array, hash, dictionary, or some other analogous data structure.
+
+In Vertebra, we leverage our structure data-type that we've imported from XML-RPC.  The configuration for any point is identified by an ordered set of \resources{}\footnote{\resources{} are introduced later, see page \pageref{ref:define-resource}}.  These discovery of configuration based on these \resources{} are composed to create the realized configuration options for an instance.
 
 \paragraph{Example}
 
-{\Large TODO}
+Consider the example of a simple agent that manages some sort of cryptographic keys.  Consider that this key manager has a few knobs to twiddle.  First, it might have an optional session key cache that caches session keys it generates.  Secondly, it might have the ability to add additional certifying authorities via its provisioning.
+
+We are able to specify that all agents in our organization are updated with a specific root authority certificate.  Let's say that the control channel should be paranoid about keeping old session keys around.  We can specify that agents provisioned as being mission critical have this cache turned off.  We might also specify that the whole organization should have it turned on for efficiency (excepting the mission critical services).  All of this is matched via \resources{}.
 
 \paragraph{Related Implementations}
 
@@ -143,7 +149,7 @@ paragraph{Discussion}
 
 {\Large TODO:} A matrix of boxes, all ugly.  Let the computer do the work.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -163,7 +169,7 @@ paragraph{Discussion}
 
 {\Large TODO:} What's running is important, eh?
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -181,7 +187,7 @@ paragraph{Discussion}
 
 {\Large TODO:} If it runs, kill it!  Or pause it!  Or send some other exciting event toward it.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -199,7 +205,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Try to kill job.  Job just won't die until completion.  Badness.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -217,7 +223,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Rather than waiting until completion, this job just hangs forever.  Also sucks.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -251,7 +257,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Useful tagging and severity.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -271,7 +277,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Log shipping is bad.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -289,7 +295,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Using a tool to report on the logs is okay.  Querying logs scales much better than ``reading'' logs.  Seems like the same thing, but it's not.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -310,7 +316,7 @@ paragraph{Discussion}
 
 {\Large TODO:} No security.  Lossy delivery.  Not distributed.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -330,7 +336,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Binary format is nuts. Requires compiled code to extend log message types.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -348,7 +354,7 @@ Microsoft Windows\texttrademark Event Log\index[tech]{Microsoft Windows\texttrad
 
 {\Large TODO:} Helps diagnose catastrophes.  Also reduces trust-spread for audit log.  No intermediate can tamper with the audit logs because you always get them from the source.  Also handy because we get both sides of the story, which can be reconciled to detect lies.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
@@ -366,7 +372,7 @@ paragraph{Discussion}
 
 {\Large TODO:} Limited audit events. Not distributed. One place to tamper. Difficult to query. Requires compiled code to extend audit message types.
 
-paragraph{Discussion}
+\paragraph{Discussion}
 
 {\Large TODO}
 
