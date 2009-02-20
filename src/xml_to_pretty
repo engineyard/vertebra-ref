@@ -1,0 +1,157 @@
+#!/usr/bin/env python2.5
+from xml.sax.saxutils import escape,quoteattr
+from lxml import etree as et
+from sys import argv,exit,stderr
+
+# Functions
+def indent(elem, level=0):
+  i = "\n" + level*"  "
+  if len(elem):
+    if not elem.text or not elem.text.strip():
+      elem.text = i + "  "
+      for e in elem:
+        indent(e, level+1)
+        if not e.tail or not e.tail.strip():
+          e.tail = i + "  "
+      if not e.tail or not e.tail.strip():
+        e.tail = i
+  else:
+    if level and (not elem.tail or not elem.tail.strip()):
+      elem.tail = i
+
+def spitout(strm,elem):
+  attrib = elem.attrib
+  attrs = sorted(attrib)
+  cid = None
+  if 'comment' in attrib:
+    cid = attrib['comment']
+    del attrib['comment']
+    attrs.remove('comment')
+    strm.write('<span class="hotzone" target=%s>' % quoteattr(cid))
+  if elem.tag is et.Comment:
+    strm.write('<span class="comment">')
+    strm.write(escape('<!--%s-->%s' % (escape(elem.text),escape(elem.tail),)))
+    strm.write('</span>')
+    if cid:
+      strm.write('</span>')
+    return
+  strm.write('<span class="tag">')
+  strm.write(escape('<%s' % elem.tag))
+  for a in attrs:
+    strm.write(
+      escape(' %s=' % a) + '<span class="attrval">' + \
+      escape('"%s"' % attrib[a]) + '</span>'
+    )
+  if not (elem.text or len(elem)):
+    strm.write(escape(" />") + '</span>')
+    if elem.tail:
+      strm.write(escape(elem.tail))
+    return
+  strm.write(escape(">") + '</span>')
+  if elem.text:
+    strm.write(escape(elem.text))
+  for el in elem:
+    spitout(strm,el)
+  strm.write('<span class="tag">' + escape("</%s>" % elem.tag) + '</span>')
+  if cid:
+    strm.write('</span>')
+  if elem.tail:
+    strm.write(escape(elem.tail))
+
+# Usage
+try:
+  (src,cmt,dst) = argv[1:]
+except:
+  print >>stderr, """usage: xml_to_pretty <source> <comment> <destination>"
+       <source> should be a file containing an XML document to be highlighted
+       <comment> should be xml with <comment> tags
+       <destination> should be the file to generate XML into
+
+       The comment XML may have a title attribute on the root element that
+       will be used as the title of the generated html page
+
+       The generated XML will include links to jquery.js and a stylesheet
+       determined by the suffix of the source file"""
+  exit(1)
+
+print >>stderr, "Parsing Comments..."
+cmt = open(cmt,"r")
+ctree = et.ElementTree(file=cmt)
+
+comments = list( 
+  ( 
+    (
+      el.attrib["id"],
+      el.text + ''.join( 
+        (et.tostring(sel) for sel in el) 
+      )
+    ) for el in ctree.findall("/comment")
+  ) 
+)
+
+# Get title of page and css, with sensible defaults
+cattr = ctree.getroot().attrib
+title = escape(cattr.get("title",src))
+css = cattr.get("css","xml") + ".css"
+
+print >>stderr, "Parsing Input..."
+src = open(src,"r")
+stree = et.ElementTree(file=src)
+sroot = stree.getroot()
+indent(sroot)
+
+print >>stderr, "Opening %s..." % dst
+
+dst = file(dst,"w")
+
+print >>stderr, "Generating Output..."
+
+print >>stderr, " .. header"
+print >>dst, """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+  <head>
+    <title>%s</title>
+    <link rel="stylesheet" href="base.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="%s" type="text/css" media="screen" />
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $('.title').click(function(){ $('.commentbox').fadeIn(150); });
+        $('#escapedxml').mousedown(function(){
+          $('.commentbox').fadeOut(150);
+          $('#comment_default').fadeIn(150);
+        });
+        $('.hotzone').click(function(){
+          var targets = $(this).attr('target').split(',');
+          for (i=0;i<targets.length;i++) {
+            $('#comment_' + targets[i]).fadeIn(150);
+          };
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrap">""" % (title,css)
+
+print >>stderr, " .. xml"
+print >>dst,'      <div id="escapedxml"><div class="pad">'
+print >>dst,'        <h1 class="title">%s</h1>' % escape(title)
+print >>dst,'        <div class="xmlcontent"><pre>'
+
+spitout(dst,sroot)
+
+print >>dst,'        </pre></div>'
+print >>dst,'      </div></div>'
+print >>dst,'      <div id="commentaccordian"><div class="pad">'
+
+print >>dst,'        <div class="commentbox" id="comment_default">Click title to see all comments.  Click individual element text to reveal comments limited to a certain location.</div>'
+for cname,ctext in comments:
+  print >>dst,'        <div class="commentbox" id=%s style="display:none">%s</div>' \
+                                                                  % (quoteattr('comment_'+cname),ctext,)
+
+print >>dst,'      </div></div>'
+
+print >>stderr, " .. footer"
+print >>dst, "    </div>"
+print >>dst, "  </body>"
+print >>dst, "</html>"

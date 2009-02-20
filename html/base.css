@@ -1,0 +1,42 @@
+html body {
+  margin:0;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  height:100%;
+  max-heigh:100%;
+}
+
+#escapedxml {
+  position:fixed;
+  top:0;
+  left:0;
+  right:400px;
+  bottom:0;
+  overflow:auto;
+}
+
+#commentaccordian {
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  width:400px;
+  height:100%;
+  overflow:auto;
+  background:navy;
+  color:white;
+}
+
+#comment_default {
+  border:1px solid white;
+}
+
+.commentbox {
+  padding:0.2em;
+  margin-bottom:1em;
+}
+
+.pad {
+  margin:15px;
+}

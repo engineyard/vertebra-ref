@@ -1,0 +1,25 @@
+.title {
+  float:right;
+  color:white;
+  top: 0px;
+  right:450px; 
+  position:fixed;
+}
+
+.xmlcontent {
+  background-color: black;
+  color: #aaaaaa;
+  padding: 1em;
+}
+
+.comment {
+  color: #555555;
+}
+
+.tag {
+  color: brown;
+}
+
+.attrval {
+  color: yellow;
+}

@@ -1,0 +1,124 @@
+<workflow name="/sales/accept_order" start="get_data" comment="workflow">
+  Sales: Receive Order
+
+  Receives an order and gets things rolling.
+
+  <import comment="global,import">
+    <res assert="company" comment="type,res,assert">/company/engineyard"</res>
+    <res assert="location" comment="type,res,assert">/us</res>
+    <i4 assert="api_version" comment="type,i4,assert">5</i4>
+
+    <string from="name" comment="type,string,import_from">Id of Customer</string>
+    <string from="location" comment="type,string,import_from">Resource Giving Location Information</string>
+    <list from="items" comment="type,list,import_from">Line Items Ordered</list>
+
+    <i4 key="lucky_number" comment="type,i4,stuffed">42</i4>
+  </import>
+
+  <!-- We don't have any global <export /> tag -->
+
+  <state id="get_data" comment="state">
+    First, we have to load the contact data from our CRM.
+
+    <op type="/sales/crm/find_contact_data" scope="single" comment="op">
+      <import comment="op_input">
+        <string key="contact" from="name" />
+        <string key="type">customer</string> <!-- hardcoded value -->
+      </import>
+      <export comment="op_export">
+        <first key="contact_id" to="cust_id" />
+	<bool assert="error">false</bool><!-- asserted output -->
+      </export>
+    </op>
+    <emit>
+      <string key="message">Located customer data...</string>
+      <string from="contact_id" />
+    </emit>
+    <trans>
+      <state>process_data</state>
+    </trans>
+  </state>
+
+  <state id="process_data">
+    Now we dispatch the order to the CRM. emit some status, and a log.
+
+    <op type="/sales/crm/add_order" scope="single">
+      <import>
+        <string key="contact_id" from="cust_id" />
+      	<list from="items" /> <!-- key defaults to imported key -->
+      </import>
+      <export>
+        <first key="order_id" />
+        <first key="confirmation_code" to="ccode" />
+      </export>
+    </op>
+    <emit log_keys="app,location,cust_id,order_id" log_vals="ccode">
+      <res key="app">/sales/crm</res>
+      <string from="cust_id" />
+      <string from="location" />
+      <string from="order_id" />
+      <string from="ccode" />
+      <string key="message">Order accepted. Finding contacts.</string>
+    </emit>
+    <trans>
+      <state>build-notify-list</state>
+    </trans>
+  </state>
+
+  <state id="build-notify-list">
+    Here, we lookup who needs to be notified.
+
+    <op type="/data/lookup" scope="all">
+      <import>
+        <res key="list">/notify/orders</res>
+        <string key="customer" from="cust_id" />
+      </import>
+
+      <export><!-- Here we actually concatenate multiple lists -->
+        <list extend="contacts"><email>bob@bob.com</email></list>
+      </export>
+    </op>
+
+    <op type="/data/lookup" scope="all"><!-- This op runs in parallel -->
+      <import>
+	<res key="list">/notify/orders</res>
+      	<res key="department">/sales</res>
+      	<res from="location" />
+      </import>
+
+      <export><!-- and we keep adding to the same list -->
+        <list extend="contacts"><email /></list>
+      </export>
+    </op>
+
+    <emit>
+      <string key="message">Notifying contacts.</string>
+    </emit>
+
+    <trans>
+      <state>notify</state>
+    </trans>
+  </state>
+
+  <state id="notify">
+    And we send the notifications.
+
+    <op type="/comms/mailer" scope="single">
+      <import>
+        <list each="contacts" />
+	<string key="message">...</string>
+      </import>
+    </op>
+
+    <emit>
+      <string key="Message">
+        Order complete.
+	.... (some sort of string interpolation potentially) ...
+      </string>
+    </emit>
+
+    <trans>
+      <done />
+    </trans>
+  </state>
+</workflow>
