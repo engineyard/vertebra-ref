@@ -23,18 +23,16 @@ def spitout(strm,elem):
   attrib = elem.attrib
   attrs = sorted(attrib)
   cid = None
+  if elem.tag is et.Comment:
+    strm.write('<span class="comment">')
+    strm.write(escape('<!--%s-->%s' % (elem.text,elem.tail,)))
+    strm.write('</span>')
+    return
   if 'comment' in attrib:
     cid = attrib['comment']
     del attrib['comment']
     attrs.remove('comment')
     strm.write('<span class="hotzone" target=%s>' % quoteattr(cid))
-  if elem.tag is et.Comment:
-    strm.write('<span class="comment">')
-    strm.write(escape('<!--%s-->%s' % (escape(elem.text),escape(elem.tail),)))
-    strm.write('</span>')
-    if cid:
-      strm.write('</span>')
-    return
   strm.write('<span class="tag">')
   strm.write(escape('<%s' % elem.tag))
   for a in attrs:
@@ -121,11 +119,12 @@ print >>dst, """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3
           $('.commentbox').fadeOut(150);
           $('#comment_default').fadeIn(150);
         });
-        $('.hotzone').click(function(){
+        $('.hotzone').click(function(event){
           var targets = $(this).attr('target').split(',');
           for (i=0;i<targets.length;i++) {
             $('#comment_' + targets[i]).fadeIn(150);
           };
+          event.stopPropagation();
         });
       });
     </script>

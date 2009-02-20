@@ -12,11 +12,12 @@
           $('.commentbox').fadeOut(150);
           $('#comment_default').fadeIn(150);
         });
-        $('.hotzone').click(function(){
+        $('.hotzone').click(function(event){
           var targets = $(this).attr('target').split(',');
           for (i=0;i<targets.length;i++) {
             $('#comment_' + targets[i]).fadeIn(150);
           };
+          event.stopPropagation();
         });
       });
     </script>
@@ -43,7 +44,7 @@
     <span class="hotzone" target="type,i4,stuffed"><span class="tag">&lt;i4 key=<span class="attrval">"lucky_number"</span>&gt;</span>42<span class="tag">&lt;/i4&gt;</span></span>
   <span class="tag">&lt;/import&gt;</span></span>
 
-  <span class="comment">&lt;!-- We don't have any global &amp;lt;export /&amp;gt; tag --&gt;
+  <span class="comment">&lt;!-- We don't have any global &lt;export /&gt; tag --&gt;
 
   </span><span class="hotzone" target="state"><span class="tag">&lt;state id=<span class="attrval">"get_data"</span>&gt;</span>
     First, we have to load the contact data from our CRM.
