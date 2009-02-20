@@ -40,3 +40,7 @@ html body {
 .pad {
   margin:15px;
 }
+
+.hotzone {
+  cursor: help;
+}
