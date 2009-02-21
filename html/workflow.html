@@ -1,156 +1,178 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html>
-  <head>
-    <title>Example Workflow</title>
-    <link rel="stylesheet" href="base.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="workflow.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="jquery.js"></script>
-    <script type="text/javascript">
-      $(function(){
-        $('.title').click(function(){ $('.commentbox').fadeIn(150); });
-        $('#escapedxml').mousedown(function(){
-          $('.commentbox').fadeOut(150);
-          $('#comment_default').fadeIn(150);
+  <html>
+    <head>
+      <title>Example Workflow</title>
+      <link rel="stylesheet" href="base.css" type="text/css" media="screen" />
+      <link rel="stylesheet" href="workflow.css" type="text/css" media="screen" />
+      <script type="text/javascript" src="jquery.js"></script>
+      <script type="text/javascript">
+        $(function(){
+          $('.title').click(function(){ $('.commentbox').slideDown(500); });
+          $('.hotzone').mouseover(function(event){
+            $(this).removeClass('hovered');
+          });
+          $('.hotzone').mouseout(function(event){
+            $(this).removeClass('hovered');
+          });
+          $('.hotzone').mouseover(function(event){
+            var targets = $(this).attr('target').split(',');
+            var count = 0;
+            for (i=0;i<targets.length;i++) {
+              var target = $('#comment_' + targets[i]);
+              count += target.size();
+            };
+            $(this).addClass('hovered');
+            if (count) {
+              event.stopPropagation();
+            };
+          });
+          $('#escapedxml').mousedown(function(){
+            $('.commentbox').not('#comment_default').fadeOut(300);
+          });
+          $('.hotzone').click(function(event){
+            var targets = $(this).attr('target').split(',');
+            var count = 0;
+            for (i=0;i<targets.length;i++) {
+              var target = $('#comment_' + targets[i]);
+              target.slideDown(300);
+              count += target.size();
+            };
+            if (count) {
+              event.stopPropagation();
+            };
+          });
         });
-        $('.hotzone').click(function(event){
-          var targets = $(this).attr('target').split(',');
-          for (i=0;i<targets.length;i++) {
-            $('#comment_' + targets[i]).fadeIn(150);
-          };
-          event.stopPropagation();
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <div id="wrap">
+      </script>
+    </head>
+    <body>
+      <div id="wrap">
       <div id="escapedxml"><div class="pad">
         <h1 class="title">Example Workflow</h1>
         <div class="xmlcontent"><pre>
-<span class="hotzone" target="workflow"><span class="tag">&lt;workflow name=<span class="attrval">"/sales/accept_order"</span> start=<span class="attrval">"get_data"</span>&gt;</span>
+<span class="hotzone" target="workflow"><span class="tag">&lt;<span class="tagname" class="tag_workflow">workflow</span> <span class="attrkey">name</span>=<span class="attrval">"/sales/accept_order"</span> <span class="attrkey">start</span>=<span class="attrval">"get_data"</span>&gt;</span>
   Sales: Receive Order
 
   Receives an order and gets things rolling.
 
-  <span class="hotzone" target="global,import"><span class="tag">&lt;import&gt;</span>
-    <span class="hotzone" target="type,res,assert"><span class="tag">&lt;res assert=<span class="attrval">"company"</span>&gt;</span>/company/engineyard"<span class="tag">&lt;/res&gt;</span></span>
-    <span class="hotzone" target="type,res,assert"><span class="tag">&lt;res assert=<span class="attrval">"location"</span>&gt;</span>/us<span class="tag">&lt;/res&gt;</span></span>
-    <span class="hotzone" target="type,i4,assert"><span class="tag">&lt;i4 assert=<span class="attrval">"api_version"</span>&gt;</span>5<span class="tag">&lt;/i4&gt;</span></span>
+  <span class="hotzone" target="global,import"><span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+    <span class="hotzone" target="type,res,assert"><span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">assert</span>=<span class="attrval">"company"</span>&gt;</span>/company/engineyard"<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span></span>
+    <span class="hotzone" target="type,res,assert"><span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">assert</span>=<span class="attrval">"location"</span>&gt;</span>/us<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span></span>
+    <span class="hotzone" target="type,i4,assert"><span class="tag">&lt;<span class="tagname" class="tag_i4">i4</span> <span class="attrkey">assert</span>=<span class="attrval">"api_version"</span>&gt;</span>5<span class="tag">&lt;/<span class="tagname" class="tag_i4">i4</span>&gt;</span></span>
 
-    <span class="hotzone" target="type,string,import_from"><span class="tag">&lt;string from=<span class="attrval">"name"</span>&gt;</span>Id of Customer<span class="tag">&lt;/string&gt;</span></span>
-    <span class="hotzone" target="type,string,import_from"><span class="tag">&lt;string from=<span class="attrval">"location"</span>&gt;</span>Resource Giving Location Information<span class="tag">&lt;/string&gt;</span></span>
-    <span class="hotzone" target="type,list,import_from"><span class="tag">&lt;list from=<span class="attrval">"items"</span>&gt;</span>Line Items Ordered<span class="tag">&lt;/list&gt;</span></span>
+    <span class="hotzone" target="type,string,import_from"><span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"name"</span>&gt;</span>Id of Customer<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span></span>
+    <span class="hotzone" target="type,string,import_from"><span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"location"</span>&gt;</span>Resource Giving Location Information<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span></span>
+    <span class="hotzone" target="type,list,import_from"><span class="tag">&lt;<span class="tagname" class="tag_list">list</span> <span class="attrkey">from</span>=<span class="attrval">"items"</span>&gt;</span>Line Items Ordered<span class="tag">&lt;/<span class="tagname" class="tag_list">list</span>&gt;</span></span>
 
-    <span class="hotzone" target="type,i4,stuffed"><span class="tag">&lt;i4 key=<span class="attrval">"lucky_number"</span>&gt;</span>42<span class="tag">&lt;/i4&gt;</span></span>
-  <span class="tag">&lt;/import&gt;</span></span>
+    <span class="hotzone" target="type,i4,stuffed"><span class="tag">&lt;<span class="tagname" class="tag_i4">i4</span> <span class="attrkey">key</span>=<span class="attrval">"lucky_number"</span>&gt;</span>42<span class="tag">&lt;/<span class="tagname" class="tag_i4">i4</span>&gt;</span></span>
+  <span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span></span>
 
   <span class="comment">&lt;!-- We don't have any global &lt;export /&gt; tag --&gt;
 
-  </span><span class="hotzone" target="state"><span class="tag">&lt;state id=<span class="attrval">"get_data"</span>&gt;</span>
+  </span><span class="hotzone" target="state"><span class="tag">&lt;<span class="tagname" class="tag_state">state</span> <span class="attrkey">id</span>=<span class="attrval">"get_data"</span>&gt;</span>
     First, we have to load the contact data from our CRM.
 
-    <span class="hotzone" target="op"><span class="tag">&lt;op scope=<span class="attrval">"single"</span> type=<span class="attrval">"/sales/crm/find_contact_data"</span>&gt;</span>
-      <span class="hotzone" target="op_input"><span class="tag">&lt;import&gt;</span>
-        <span class="tag">&lt;string from=<span class="attrval">"name"</span> key=<span class="attrval">"contact"</span> /&gt;</span>
-        <span class="tag">&lt;string key=<span class="attrval">"type"</span>&gt;</span>customer<span class="tag">&lt;/string&gt;</span> <span class="comment">&lt;!-- hardcoded value --&gt;
-      </span><span class="tag">&lt;/import&gt;</span></span>
-      <span class="hotzone" target="op_export"><span class="tag">&lt;export&gt;</span>
-        <span class="tag">&lt;first key=<span class="attrval">"contact_id"</span> to=<span class="attrval">"cust_id"</span> /&gt;</span>
-	<span class="tag">&lt;bool assert=<span class="attrval">"error"</span>&gt;</span>false<span class="tag">&lt;/bool&gt;</span><span class="comment">&lt;!-- asserted output --&gt;
-      </span><span class="tag">&lt;/export&gt;</span></span>
-    <span class="tag">&lt;/op&gt;</span></span>
-    <span class="tag">&lt;emit&gt;</span>
-      <span class="tag">&lt;string key=<span class="attrval">"message"</span>&gt;</span>Located customer data...<span class="tag">&lt;/string&gt;</span>
-      <span class="tag">&lt;string from=<span class="attrval">"contact_id"</span> /&gt;</span>
-    <span class="tag">&lt;/emit&gt;</span>
-    <span class="tag">&lt;trans&gt;</span>
-      <span class="tag">&lt;state&gt;</span>process_data<span class="tag">&lt;/state&gt;</span>
-    <span class="tag">&lt;/trans&gt;</span>
-  <span class="tag">&lt;/state&gt;</span></span>
+    <span class="hotzone" target="op"><span class="tag">&lt;<span class="tagname" class="tag_op">op</span> <span class="attrkey">scope</span>=<span class="attrval">"single"</span> <span class="attrkey">type</span>=<span class="attrval">"/sales/crm/find_contact_data"</span>&gt;</span>
+      <span class="hotzone" target="op_input"><span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"name"</span> <span class="attrkey">key</span>=<span class="attrval">"contact"</span> /&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"type"</span>&gt;</span>customer<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span> <span class="comment">&lt;!-- hardcoded value --&gt;
+      </span><span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span></span>
+      <span class="hotzone" target="op_export"><span class="tag">&lt;<span class="tagname" class="tag_export">export</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_first">first</span> <span class="attrkey">key</span>=<span class="attrval">"contact_id"</span> <span class="attrkey">to</span>=<span class="attrval">"cust_id"</span> /&gt;</span>
+	<span class="tag">&lt;<span class="tagname" class="tag_bool">bool</span> <span class="attrkey">assert</span>=<span class="attrval">"error"</span>&gt;</span>false<span class="tag">&lt;/<span class="tagname" class="tag_bool">bool</span>&gt;</span><span class="comment">&lt;!-- asserted output --&gt;
+      </span><span class="tag">&lt;/<span class="tagname" class="tag_export">export</span>&gt;</span></span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_op">op</span>&gt;</span></span>
+    <span class="tag">&lt;<span class="tagname" class="tag_emit">emit</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"message"</span>&gt;</span>Located customer data...<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"contact_id"</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_emit">emit</span>&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_state">state</span>&gt;</span>process_data<span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+  <span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span></span>
 
-  <span class="tag">&lt;state id=<span class="attrval">"process_data"</span>&gt;</span>
+  <span class="tag">&lt;<span class="tagname" class="tag_state">state</span> <span class="attrkey">id</span>=<span class="attrval">"process_data"</span>&gt;</span>
     Now we dispatch the order to the CRM. emit some status, and a log.
 
-    <span class="tag">&lt;op scope=<span class="attrval">"single"</span> type=<span class="attrval">"/sales/crm/add_order"</span>&gt;</span>
-      <span class="tag">&lt;import&gt;</span>
-        <span class="tag">&lt;string from=<span class="attrval">"cust_id"</span> key=<span class="attrval">"contact_id"</span> /&gt;</span>
-      	<span class="tag">&lt;list from=<span class="attrval">"items"</span> /&gt;</span> <span class="comment">&lt;!-- key defaults to imported key --&gt;
-      </span><span class="tag">&lt;/import&gt;</span>
-      <span class="tag">&lt;export&gt;</span>
-        <span class="tag">&lt;first key=<span class="attrval">"order_id"</span> /&gt;</span>
-        <span class="tag">&lt;first key=<span class="attrval">"confirmation_code"</span> to=<span class="attrval">"ccode"</span> /&gt;</span>
-      <span class="tag">&lt;/export&gt;</span>
-    <span class="tag">&lt;/op&gt;</span>
-    <span class="tag">&lt;emit log_keys=<span class="attrval">"app,location,cust_id,order_id"</span> log_vals=<span class="attrval">"ccode"</span>&gt;</span>
-      <span class="tag">&lt;res key=<span class="attrval">"app"</span>&gt;</span>/sales/crm<span class="tag">&lt;/res&gt;</span>
-      <span class="tag">&lt;string from=<span class="attrval">"cust_id"</span> /&gt;</span>
-      <span class="tag">&lt;string from=<span class="attrval">"location"</span> /&gt;</span>
-      <span class="tag">&lt;string from=<span class="attrval">"order_id"</span> /&gt;</span>
-      <span class="tag">&lt;string from=<span class="attrval">"ccode"</span> /&gt;</span>
-      <span class="tag">&lt;string key=<span class="attrval">"message"</span>&gt;</span>Order accepted. Finding contacts.<span class="tag">&lt;/string&gt;</span>
-    <span class="tag">&lt;/emit&gt;</span>
-    <span class="tag">&lt;trans&gt;</span>
-      <span class="tag">&lt;state&gt;</span>build-notify-list<span class="tag">&lt;/state&gt;</span>
-    <span class="tag">&lt;/trans&gt;</span>
-  <span class="tag">&lt;/state&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_op">op</span> <span class="attrkey">scope</span>=<span class="attrval">"single"</span> <span class="attrkey">type</span>=<span class="attrval">"/sales/crm/add_order"</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"cust_id"</span> <span class="attrkey">key</span>=<span class="attrval">"contact_id"</span> /&gt;</span>
+      	<span class="tag">&lt;<span class="tagname" class="tag_list">list</span> <span class="attrkey">from</span>=<span class="attrval">"items"</span> /&gt;</span> <span class="comment">&lt;!-- key defaults to imported key --&gt;
+      </span><span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_export">export</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_first">first</span> <span class="attrkey">key</span>=<span class="attrval">"order_id"</span> /&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_first">first</span> <span class="attrkey">key</span>=<span class="attrval">"confirmation_code"</span> <span class="attrkey">to</span>=<span class="attrval">"ccode"</span> /&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_export">export</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_op">op</span>&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_emit">emit</span> <span class="attrkey">log_keys</span>=<span class="attrval">"app,location,cust_id,order_id"</span> <span class="attrkey">log_vals</span>=<span class="attrval">"ccode"</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">key</span>=<span class="attrval">"app"</span>&gt;</span>/sales/crm<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"cust_id"</span> /&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"location"</span> /&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"order_id"</span> /&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"ccode"</span> /&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"message"</span>&gt;</span>Order accepted. Finding contacts.<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_emit">emit</span>&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_state">state</span>&gt;</span>build-notify-list<span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+  <span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
 
-  <span class="tag">&lt;state id=<span class="attrval">"build-notify-list"</span>&gt;</span>
+  <span class="tag">&lt;<span class="tagname" class="tag_state">state</span> <span class="attrkey">id</span>=<span class="attrval">"build-notify-list"</span>&gt;</span>
     Here, we lookup who needs to be notified.
 
-    <span class="tag">&lt;op scope=<span class="attrval">"all"</span> type=<span class="attrval">"/data/lookup"</span>&gt;</span>
-      <span class="tag">&lt;import&gt;</span>
-        <span class="tag">&lt;res key=<span class="attrval">"list"</span>&gt;</span>/notify/orders<span class="tag">&lt;/res&gt;</span>
-        <span class="tag">&lt;string from=<span class="attrval">"cust_id"</span> key=<span class="attrval">"customer"</span> /&gt;</span>
-      <span class="tag">&lt;/import&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_op">op</span> <span class="attrkey">scope</span>=<span class="attrval">"all"</span> <span class="attrkey">type</span>=<span class="attrval">"/data/lookup"</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">key</span>=<span class="attrval">"list"</span>&gt;</span>/notify/orders<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">from</span>=<span class="attrval">"cust_id"</span> <span class="attrkey">key</span>=<span class="attrval">"customer"</span> /&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span>
 
-      <span class="tag">&lt;export&gt;</span><span class="comment">&lt;!-- Here we actually concatenate multiple lists --&gt;
-        </span><span class="tag">&lt;list extend=<span class="attrval">"contacts"</span>&gt;</span><span class="tag">&lt;email&gt;</span>bob@bob.com<span class="tag">&lt;/email&gt;</span><span class="tag">&lt;/list&gt;</span>
-      <span class="tag">&lt;/export&gt;</span>
-    <span class="tag">&lt;/op&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_export">export</span>&gt;</span><span class="comment">&lt;!-- Here we actually concatenate multiple lists --&gt;
+        </span><span class="tag">&lt;<span class="tagname" class="tag_list">list</span> <span class="attrkey">extend</span>=<span class="attrval">"contacts"</span>&gt;</span><span class="tag">&lt;<span class="tagname" class="tag_email">email</span>&gt;</span>bob@bob.com<span class="tag">&lt;/<span class="tagname" class="tag_email">email</span>&gt;</span><span class="tag">&lt;/<span class="tagname" class="tag_list">list</span>&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_export">export</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_op">op</span>&gt;</span>
 
-    <span class="tag">&lt;op scope=<span class="attrval">"all"</span> type=<span class="attrval">"/data/lookup"</span>&gt;</span><span class="comment">&lt;!-- This op runs in parallel --&gt;
-      </span><span class="tag">&lt;import&gt;</span>
-	<span class="tag">&lt;res key=<span class="attrval">"list"</span>&gt;</span>/notify/orders<span class="tag">&lt;/res&gt;</span>
-      	<span class="tag">&lt;res key=<span class="attrval">"department"</span>&gt;</span>/sales<span class="tag">&lt;/res&gt;</span>
-      	<span class="tag">&lt;res from=<span class="attrval">"location"</span> /&gt;</span>
-      <span class="tag">&lt;/import&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_op">op</span> <span class="attrkey">scope</span>=<span class="attrval">"all"</span> <span class="attrkey">type</span>=<span class="attrval">"/data/lookup"</span>&gt;</span><span class="comment">&lt;!-- This op runs in parallel --&gt;
+      </span><span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+	<span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">key</span>=<span class="attrval">"list"</span>&gt;</span>/notify/orders<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span>
+      	<span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">key</span>=<span class="attrval">"department"</span>&gt;</span>/sales<span class="tag">&lt;/<span class="tagname" class="tag_res">res</span>&gt;</span>
+      	<span class="tag">&lt;<span class="tagname" class="tag_res">res</span> <span class="attrkey">from</span>=<span class="attrval">"location"</span> /&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span>
 
-      <span class="tag">&lt;export&gt;</span><span class="comment">&lt;!-- and we keep adding to the same list --&gt;
-        </span><span class="tag">&lt;list extend=<span class="attrval">"contacts"</span>&gt;</span><span class="tag">&lt;email /&gt;</span><span class="tag">&lt;/list&gt;</span>
-      <span class="tag">&lt;/export&gt;</span>
-    <span class="tag">&lt;/op&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_export">export</span>&gt;</span><span class="comment">&lt;!-- and we keep adding to the same list --&gt;
+        </span><span class="tag">&lt;<span class="tagname" class="tag_list">list</span> <span class="attrkey">extend</span>=<span class="attrval">"contacts"</span>&gt;</span><span class="tag">&lt;<span class="tagname" class="tag_email">email</span> /&gt;</span><span class="tag">&lt;/<span class="tagname" class="tag_list">list</span>&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_export">export</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_op">op</span>&gt;</span>
 
-    <span class="tag">&lt;emit&gt;</span>
-      <span class="tag">&lt;string key=<span class="attrval">"message"</span>&gt;</span>Notifying contacts.<span class="tag">&lt;/string&gt;</span>
-    <span class="tag">&lt;/emit&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_emit">emit</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"message"</span>&gt;</span>Notifying contacts.<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_emit">emit</span>&gt;</span>
 
-    <span class="tag">&lt;trans&gt;</span>
-      <span class="tag">&lt;state&gt;</span>notify<span class="tag">&lt;/state&gt;</span>
-    <span class="tag">&lt;/trans&gt;</span>
-  <span class="tag">&lt;/state&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_state">state</span>&gt;</span>notify<span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+  <span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
 
-  <span class="tag">&lt;state id=<span class="attrval">"notify"</span>&gt;</span>
+  <span class="tag">&lt;<span class="tagname" class="tag_state">state</span> <span class="attrkey">id</span>=<span class="attrval">"notify"</span>&gt;</span>
     And we send the notifications.
 
-    <span class="tag">&lt;op scope=<span class="attrval">"single"</span> type=<span class="attrval">"/comms/mailer"</span>&gt;</span>
-      <span class="tag">&lt;import&gt;</span>
-        <span class="tag">&lt;list each=<span class="attrval">"contacts"</span> /&gt;</span>
-	<span class="tag">&lt;string key=<span class="attrval">"message"</span>&gt;</span>...<span class="tag">&lt;/string&gt;</span>
-      <span class="tag">&lt;/import&gt;</span>
-    <span class="tag">&lt;/op&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_op">op</span> <span class="attrkey">scope</span>=<span class="attrval">"single"</span> <span class="attrkey">type</span>=<span class="attrval">"/comms/mailer"</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_import">import</span>&gt;</span>
+        <span class="tag">&lt;<span class="tagname" class="tag_list">list</span> <span class="attrkey">each</span>=<span class="attrval">"contacts"</span> /&gt;</span>
+	<span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"message"</span>&gt;</span>...<span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_import">import</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_op">op</span>&gt;</span>
 
-    <span class="tag">&lt;emit&gt;</span>
-      <span class="tag">&lt;string key=<span class="attrval">"Message"</span>&gt;</span>
+    <span class="tag">&lt;<span class="tagname" class="tag_emit">emit</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_string">string</span> <span class="attrkey">key</span>=<span class="attrval">"Message"</span>&gt;</span>
         Order complete.
 	.... (some sort of string interpolation potentially) ...
-      <span class="tag">&lt;/string&gt;</span>
-    <span class="tag">&lt;/emit&gt;</span>
+      <span class="tag">&lt;/<span class="tagname" class="tag_string">string</span>&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_emit">emit</span>&gt;</span>
 
-    <span class="tag">&lt;trans&gt;</span>
-      <span class="tag">&lt;done /&gt;</span>
-    <span class="tag">&lt;/trans&gt;</span>
-  <span class="tag">&lt;/state&gt;</span>
-<span class="tag">&lt;/workflow&gt;</span></span>        </pre></div>
+    <span class="tag">&lt;<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+      <span class="tag">&lt;<span class="tagname" class="tag_done">done</span> /&gt;</span>
+    <span class="tag">&lt;/<span class="tagname" class="tag_trans">trans</span>&gt;</span>
+  <span class="tag">&lt;/<span class="tagname" class="tag_state">state</span>&gt;</span>
+<span class="tag">&lt;/<span class="tagname" class="tag_workflow">workflow</span>&gt;</span></span>        </pre></div>
       </div></div>
       <div id="commentaccordian"><div class="pad">
         <div class="commentbox" id="comment_default">Click title to see all comments.  Click individual element text to reveal comments limited to a certain location.</div>
