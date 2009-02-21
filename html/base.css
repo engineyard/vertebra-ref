@@ -35,13 +35,15 @@ html body {
   color:white;
 }
 
-#comment_default {
-  border:1px solid white;
+.commentbox {
+  display:none;
 }
 
-.commentbox {
-  padding:0.2em;
-  margin-bottom:1em;
+.commenthdr {
+  padding: 5px;
+  display:none;
+  color: black;
+  background-color:#bbbbbb;
 }
 
 .pad {

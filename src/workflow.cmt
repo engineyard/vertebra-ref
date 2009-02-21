@@ -2,7 +2,7 @@
 <comments title="Example Workflow" css="workflow">
 
   <comment id="workflow">
-    <h3>Workflow</h3>
+    <h3 class="tochead">Workflow</h3>
     <p>This is the definition for a Vertebra workflow.  Workflows are executed
 by Cavalcade in a fault-tolerant manner.  The top-level 'workflow' element has
 a number of attributes as follows:</p>
@@ -13,14 +13,14 @@ a number of attributes as follows:</p>
   </comment>
 
   <comment id="global">
-    <h3>Global Import</h3>
+    <h3 class="tochead">Global Import</h3>
     <p>This import element specifies all of the inputs, hardcoded values, and
 assertions about the operation as a whole.  Essentially, each subelement says
 something about the input to the workflow operation.</p>
   </comment>
 
   <comment id="assert">
-    <h4>Asserted Values</h4>
+    <h4 class="tochead">Asserted Values</h4>
     <p>For example, a data value with an "assert" annotation indicates that
 this workflow asserts that this value must be present for this workflow to be
 triggered.  This is most commonly used to specify that a certain tree of
@@ -29,7 +29,7 @@ resources must be matched.  If the actual resource matched is desired, the
   </comment>
 
   <comment id="import_from">
-    <h4>Imported Values</h4>
+    <h4 class="tochead">Imported Values</h4>
     <p>A "from" annotation indicates that an input should be copied from the
 input key with the value of the "from" attribute into an initial state-value
 for the workflow.  By default, the key is the same as the one imported from.
@@ -38,14 +38,14 @@ value of the "to" annotation instead.</p>
   </comment>
 
   <comment id="stuffed">
-    <h4>Default Values</h4>
+    <h4 class="tochead">Default Values</h4>
     <p>A value annotated simply with a "key" is imported into the initial
 state-hash as a default value.  It need not be present in the operation that
 triggers the workflow.</p>
   </comment>
 
   <comment id="type">
-    <h3>Data Type</h3>
+    <h3 class="tochead">Data Type</h3>
     <p>Data type tags indicate how a piece of data is to be marshalled.  Beyond
 checking the validity of the tag, Cavalcade handles very few data-types
 directly, and can't be relied upon to validate the internal structure of an XML
@@ -53,7 +53,7 @@ element.  Element types which are not understood are marked as "opaque", while t
   </comment>
 
   <comment id="res">
-    <h4>Resource (transparent)</h4>
+    <h4 class="tochead">Resource (transparent)</h4>
     <p>This data-type indicates a Vertebra resource.  A full description of
 resources is outside the scope of this document.  For the purposes of matching,
 a resource or any of its children will match (in the case of an "assert"
@@ -63,22 +63,22 @@ matched is passed through (in the case of a "from" annotation).</p>
   </comment>
 
   <comment id="string">
-    <h4>String (transparent)</h4>
+    <h4 class="tochead">String (transparent)</h4>
     <p>The String data-type is simply an embedded unicode string.</p>
   </comment>
 
   <comment id="i4">
-    <h4>Integer, 32-bit (transparent)</h4>
+    <h4 class="tochead">Integer, 32-bit (transparent)</h4>
     <p>The integer data-type is a 32-bit, signed integer represented as a string of numerical characters.</p>
   </comment>
 
   <comment id="list">
-    <h4>List (transparent)</h4>
+    <h4 class="tochead">List (transparent)</h4>
     <p>A list is simply the list built up of all of the sub-elements, appropriately unmarshalled.</p>
   </comment>
 
   <comment id="struct">
-    <h4>Struct (transparent)</h4>
+    <h4 class="tochead">Struct (transparent)</h4>
     <p>A struct is simply the hash built up of all of the sub-elements, appropriately unmarshalled, and keyed by their "key" attribute".</p>
   </comment>
 
