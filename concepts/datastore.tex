@@ -6,11 +6,11 @@
 \label{ref:core-data-storage}To orchestrate services in the cloud, information of a certain character must be stored and queried.  A data store for Vertebra needs to have a few characteristics:
 
 \begin{itemize}
-	\item it should be fault-tolerant
-	\item it should be horizontally scalable
-	\item it should be keyed similarly to operation discovery
-	\item it should have values that easily adapt to become input to operations
-	\item it should have a versioning capability
+        \item it should be fault-tolerant
+        \item it should be horizontally scalable
+        \item it should be keyed similarly to operation discovery
+        \item it should have values that easily adapt to become input to operations
+        \item it should have a versioning capability
 \end{itemize}
 
 The Vertebra implementation provides a data store with these properties\footnote{TODO: versioning isn't done yet.} in the form of Entrep\^ot.
@@ -32,8 +32,8 @@ Values are exactly the same structure as the parameters to an operation.  Functi
 Each mapping is called a record.  Records are represented as a hash containing:
 
 \begin{description} 
-	\item[keys] which maps to a mapping of key names to \resources{}
-	\item[values] which maps to a mapping that holds whatever data is being stored
+        \item[keys] which maps to a mapping of key names to \resources{}
+        \item[values] which maps to a mapping that holds whatever data is being stored
 \end{description}
 
 \subsection{Operations}

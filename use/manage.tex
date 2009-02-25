@@ -9,7 +9,7 @@ There are also some Anti-Use Cases.  These provide management behaviors that we 
 
 One of the signs of a good data model is ``Don't Repeat Yourself'' (DRY\index[subject]{Agile Programming!DRY}\nomenclature{DRY}{literally ``Don't Repeat Yourself''; from agile programming, if the same data is entered in multiple places, it's generally taken to be a sign of a substandard model of the problem}).  If you have to record the same information in two different places (and it's not an optimization), then you have likely failed to model the data well.
 
-DRY is a good rule of thumb for a programmer.  It's practically the \textbf{only} rule of thumb for an administrator.  If the administrator continually has to repeat himself, his job will rapidly scale out of control.  The use cases in this section are all written with that fact in mind.  Each of these cases identifies a decision to choose powerful ways to reduce and avoid repetition.
+DRY is a good rule of thumb for a programmer.  It's practically the         extbf{only} rule of thumb for an administrator.  If the administrator continually has to repeat himself, his job will rapidly scale out of control.  The use cases in this section are all written with that fact in mind.  Each of these cases identifies a decision to choose powerful ways to reduce and avoid repetition.
 
 \subsection{Use Case: Composition of Permissions}
 
@@ -32,40 +32,40 @@ Depending on the semantics of the relationship, we may think of descendants in t
 \paragraph{Example}
 
 \begin{figure}[t]
-	\begin{center}\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{figs/dot/bobco1}\end{center}
-	\caption[Example Security Entities]{Sample Security Entities: BobCo and JimCo}\label{fig:bobco1-sec}
+        \begin{center}\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{figs/dot/bobco1}\end{center}
+        \caption[Example Security Entities]{Sample Security Entities: BobCo and JimCo}\label{fig:bobco1-sec}
 \end{figure}
 \begin{table}[b]
-	\begin{center}
-		\begin{tabular}{| c | l | l |}
-			\hline
-				\multicolumn{3}{|c|}{Permissions} \\
-			\hline
-				\# & Source Entity & Destination Entity \\
-			\hline \hline
-				1 & Users & Reboot \\
-			\hline
-				2 & Administrators & Virtual Machines \\
-			\hline
-				3 & Administrators & Operations \\
-			\hline
-				4 & Customer BobCo & BobCo Virtual Machines \\
-			\hline
-				5 & Customer JimCo & JimCo Virtual Machines \\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Sample Permissions}
-	\label{tbl:bobco1-perm}
+        \begin{center}
+                \begin{tabular}{| c | l | l |}
+                        \hline
+                                \multicolumn{3}{|c|}{Permissions} \\
+                        \hline
+                                \# & Source Entity & Destination Entity \\
+                        \hline \hline
+                                1 & Users & Reboot \\
+                        \hline
+                                2 & Administrators & Virtual Machines \\
+                        \hline
+                                3 & Administrators & Operations \\
+                        \hline
+                                4 & Customer BobCo & BobCo Virtual Machines \\
+                        \hline
+                                5 & Customer JimCo & JimCo Virtual Machines \\
+                        \hline
+                \end{tabular}
+        \end{center}
+        \caption{Sample Permissions}
+        \label{tbl:bobco1-perm}
 \end{table}
 
 An example diagram of a set of related objects is given in figure \ref{fig:bobco1-sec}.  Rectangles indicate abstract security entities. Ellipses mark concrete security entities. Dotted lines show association of the two.  A set of permissions on this model are shown in table \ref{tbl:bobco1-perm}.
 
-The policy specified here is very powerful. \underline{Users} are allowed to \textsf{Reboot}.  \underline{Administrators} (and thus \emph{admin@ey}) are given the access to \underline{Virtual Machines} (i.e. \emph{agent-vm1@cloud}, \emph{agent-vm2@cloud}, \emph{agent-vm3@cloud}).  \underline{BobCo} and \underline{JimCo} are given access to just their respective machines.
+The policy specified here is very powerful. \underline{Users} are allowed to         extsf{Reboot}.  \underline{Administrators} (and thus \emph{admin@ey}) are given the access to \underline{Virtual Machines} (i.e. \emph{agent-vm1@cloud}, \emph{agent-vm2@cloud}, \emph{agent-vm3@cloud}).  \underline{BobCo} and \underline{JimCo} are given access to just their respective machines.
 
-If \emph{bob@bobco} were to attempt to issue an operation of the form \textsf{Reboot(Virtual Machine 1)}, permissions 1 and 4 combine to allow the operation.  Specifically, since \emph{bob@bobco} is a descendant of \underline{Users}, permission 1 applies.  Since \emph{bob@bobco} is a descendant of \underline{BobCo}, permission 4 applies.
+If \emph{bob@bobco} were to attempt to issue an operation of the form         extsf{Reboot(Virtual Machine 1)}, permissions 1 and 4 combine to allow the operation.  Specifically, since \emph{bob@bobco} is a descendant of \underline{Users}, permission 1 applies.  Since \emph{bob@bobco} is a descendant of \underline{BobCo}, permission 4 applies.
 
-If \emph{bob@bobco} were to attempt to issue an operation of the form \textsf{Reboot(Virtual Machine 3)}, no combination of permissions allow this.
+If \emph{bob@bobco} were to attempt to issue an operation of the form         extsf{Reboot(Virtual Machine 3)}, no combination of permissions allow this.
 
 If \emph{admin@ey} were to attempt to reboot any machine, permissions 1, 2, and 3 would combine.  Note that permission 1 is obviated by permission 3, but either would apply.
 
@@ -80,7 +80,7 @@ In addition these dynamic extensions, other rich extensions can be defined.  Exa
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Novell Netware\texttrademark\index[tech]{Novell\texttrademark!Netware\texttrademark}
+        \item Novell Netware        exttrademark\index[tech]{Novell        exttrademark!Netware        exttrademark}
 \end{itemize}
 
 \subsection{Anti-Use Case: Direct Permissions}
@@ -102,8 +102,8 @@ With static permissions, there is not a good way to represent such constraints. 
 \paragraph{Example}
 
 \begin{figure}[t]
-	\begin{center}\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{figs/dot/bank_model}\end{center}
-	\caption{Bank Example Model}\label{fig:perm-flat}
+        \begin{center}\includegraphics[width=\myfigwidth,height=\myfigheight,keepaspectratio]{figs/dot/bank_model}\end{center}
+        \caption{Bank Example Model}\label{fig:perm-flat}
 \end{figure}
 
 Since this is an Anti-Use Case, we will demonstrate the pathological behavior described above.  A diagram of the model is in \ref{fig:perm-flat}.
@@ -113,8 +113,8 @@ In this particular case, there is no combination of permissions that can allow J
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Microsoft Windows\texttrademark NTFS\index[tech]{Microsoft Windows\texttrademark!NTFS}
-	\item Unix\texttrademark\index[tech]{Unix\texttrademark}
+        \item Microsoft Windows        exttrademark NTFS\index[tech]{Microsoft Windows        exttrademark!NTFS}
+        \item Unix        exttrademark\index[tech]{Unix        exttrademark}
 \end{itemize}
 
 \subsection{Use Case: Cascading Configuration}
@@ -140,7 +140,7 @@ We are able to specify that all agents in our organization are updated with a sp
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item World Wide Web Consortium (W3C) Cascading Style Sheets\index[tech]{W3C!Cascading Style Sheets}
+        \item World Wide Web Consortium (W3C) Cascading Style Sheets\index[tech]{W3C!Cascading Style Sheets}
 \end{itemize}
 
 \subsection{Anti-Use Case: Lattice Configuration}
@@ -268,7 +268,7 @@ We are able to specify that all agents in our organization are updated with a sp
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Unix\texttrademark\index[tech]{Unix\texttrademark} syslog\index[tech]{Unix\texttrademark!syslog}
+        \item Unix        exttrademark\index[tech]{Unix        exttrademark} syslog\index[tech]{Unix        exttrademark!syslog}
 \end{itemize}
 
 \subsection{Anti-Use Case: Central Logging}
@@ -306,8 +306,8 @@ We are able to specify that all agents in our organization are updated with a sp
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Erlang\index[tech]{Erlang} \textsf{log\_mf\_h}\index[tech]{Erlang!log\textunderscore mf\textunderscore h}
-	\item Erlang\index[tech]{Erlang} Report Browser\index[tech]{Erlang!Report Browser}
+        \item Erlang\index[tech]{Erlang}         extsf{log\_mf\_h}\index[tech]{Erlang!log        extunderscore mf        extunderscore h}
+        \item Erlang\index[tech]{Erlang} Report Browser\index[tech]{Erlang!Report Browser}
 \end{itemize}
 
 \subsection{Anti-Use Case: Lossy, Insecure Logs}
@@ -327,7 +327,7 @@ We are able to specify that all agents in our organization are updated with a sp
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Unix\texttrademark Syslog\index[tech]{Unix\texttrademark!syslog}
+        \item Unix        exttrademark Syslog\index[tech]{Unix        exttrademark!syslog}
 \end{itemize}
 
 \subsection{Anti-Use Case: Inextensible Log}
@@ -346,7 +346,7 @@ We are able to specify that all agents in our organization are updated with a sp
 
 \paragraph{Related Implementations}
 
-Microsoft Windows\texttrademark Event Log\index[tech]{Microsoft Windows\texttrademark!Event Log}
+Microsoft Windows        exttrademark Event Log\index[tech]{Microsoft Windows        exttrademark!Event Log}
 
 \subsection{Use Case: Distributed Auditing}
 
@@ -383,5 +383,5 @@ Microsoft Windows\texttrademark Event Log\index[tech]{Microsoft Windows\texttrad
 \paragraph{Related Implementations}
 
 \begin{itemize}
-	\item Microsoft Windows\texttrademark Audit Log\index[tech]{Microsoft Windows\texttrademark!Audit Log}
+        \item Microsoft Windows        exttrademark Audit Log\index[tech]{Microsoft Windows        exttrademark!Audit Log}
 \end{itemize}

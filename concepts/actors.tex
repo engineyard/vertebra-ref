@@ -9,7 +9,7 @@
 \subsection{Who Are These Actors?}
 
 \index[subject]{actors|(}
-Since Vertebra is about glueing systems together, it is fairly critical to be able to codify and describe exactly what things your are putting together.  With that in mind, an \actor{}\nomenclature{actor}{Vertebra's fundamental unit of code} is the fundamental unit of \textbf{code} in Vertebra.  More colloquially, they are ``where the rubber hits the road''.
+Since Vertebra is about glueing systems together, it is fairly critical to be able to codify and describe exactly what things your are putting together.  With that in mind, an \actor{}\nomenclature{actor}{Vertebra's fundamental unit of code} is the fundamental unit of         extbf{code} in Vertebra.  More colloquially, they are ``where the rubber hits the road''.
 
 Each \actor{} offers various operations that can be done on certain resources.  How exactly this is done is formalized in later chapters.
 
@@ -18,25 +18,25 @@ Each \actor{} offers various operations that can be done on certain resources.  
 Let's take an example of a bank.  This is a fairly complex organization with many systems in need of management.  Ignoring the higher-level administration of those systems, there are many pieces of code that will directly interface with a number of other systems at a much lower level.  Table \ref{tbl:bank-actors} gives a number of example actors.
 
 \begin{table}
-	\begin{center}
-		\begin{tabular}{|p{0.35\textwidth}|p{0.55\textwidth}|}
-			\hline Actor & Description \\
-			\hline
-			\hline WidgetTek Drawer Actor & Operates the bank's WidgetTek-brand cash drawers \\
-			\hline SprocketInc Drawer Actor & Operates the bank's SprocketInc-brand cash drawers \\
-			\hline Vault Actor & Operates the bank's vault control mechanism \\
-			\hline Check Reader Actor & Operates the bank's check readers \\
-			\hline ACH Dial-In Actor & Operates dial-in lines used by the bank's merchant services credit card machines \\
-			\hline ATM Actor & Controls secure leased lines to various ATMs \\
-			\hline Ledger Access Actors & Provides access to systems that handle and distribute ledger data throughout the bank \\
-			\hline Optical Storage Actor & Provides access to optical storage used for archiving check scans and bank records \\
-			\hline Alarm System Actor & Interfaces with security alarm \\
-			\hline Collect-o-matic Actor & Interfaces with an IVR system that harasses delinquent loan customers \\
-			\hline
-		\end{tabular}
-	\end{center}
-	\caption{Example Actors In A Bank}
-	\label{tbl:bank-actors}
+        \begin{center}
+                \begin{tabular}{|p{0.35        extwidth}|p{0.55        extwidth}|}
+                        \hline Actor & Description \\
+                        \hline
+                        \hline WidgetTek Drawer Actor & Operates the bank's WidgetTek-brand cash drawers \\
+                        \hline SprocketInc Drawer Actor & Operates the bank's SprocketInc-brand cash drawers \\
+                        \hline Vault Actor & Operates the bank's vault control mechanism \\
+                        \hline Check Reader Actor & Operates the bank's check readers \\
+                        \hline ACH Dial-In Actor & Operates dial-in lines used by the bank's merchant services credit card machines \\
+                        \hline ATM Actor & Controls secure leased lines to various ATMs \\
+                        \hline Ledger Access Actors & Provides access to systems that handle and distribute ledger data throughout the bank \\
+                        \hline Optical Storage Actor & Provides access to optical storage used for archiving check scans and bank records \\
+                        \hline Alarm System Actor & Interfaces with security alarm \\
+                        \hline Collect-o-matic Actor & Interfaces with an IVR system that harasses delinquent loan customers \\
+                        \hline
+                \end{tabular}
+        \end{center}
+        \caption{Example Actors In A Bank}
+        \label{tbl:bank-actors}
 \end{table}
 
 This list of \actors{} is obviously fanciful and incomplete, but it should indicate that the focus of \actors{} is the programmer.
