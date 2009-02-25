@@ -30,7 +30,7 @@
       </import>
       <export comment="op_export">
         <first key="contact_id" to="cust_id" />
-	<bool assert="error">false</bool><!-- asserted output -->
+        <bool assert="error">false</bool><!-- asserted output -->
       </export>
     </op>
     <emit>
