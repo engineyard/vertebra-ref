@@ -16,10 +16,58 @@
   color: brown;
 }
 
+.attrkey {
+  color: cyan;
+}
+
 .attrval {
   color: yellow;
 }
 
-.hovered {
+.hovered0 {
   background-color: #660000;
+}
+
+.hovered1 {
+  background-color: #550000;
+}
+
+.hovered2 {
+  background-color: #440000;
+}
+
+.hovered3 {
+  background-color: #330000;
+}
+
+.hovered4 {
+  background-color: #220000;
+}
+
+.hovered5 {
+  background-color: #110000;
+}
+
+.thover0 {
+  border: 5px solid  #660000;
+}
+
+.thover1 {
+  border: 5px solid  #550000;
+}
+
+.thover2 {
+  border: 5px solid  #440000;
+}
+
+.thover3 {
+  border: 5px solid  #330000;
+}
+
+.thover4 {
+  border: 5px solid  #220000;
+}
+
+.thover5 {
+  border: 5px solid  #110000;
 }

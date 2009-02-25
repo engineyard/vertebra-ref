@@ -1,3 +1,6 @@
+<!-- 
+  Example Workflow for Vertebra
+-->
 <workflow name="/sales/accept_order" start="get_data" comment="workflow">
   Sales: Receive Order
 
@@ -122,3 +125,4 @@
     </trans>
   </state>
 </workflow>
+<!-- funny test &gt; -->

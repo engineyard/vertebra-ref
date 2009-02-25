@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.5
+#!/usr/bin/env python2.6
 """A program to make interactive, syntax-highlighted XML displays
 """
 # Copyright 2009, Engine Yard, Inc.
@@ -6,66 +6,131 @@
 from xml.sax.saxutils import escape,quoteattr
 from lxml import etree as et
 from sys import argv,exit,stderr
+from types import StringTypes
+from functools import reduce
+
+# Helper Classes
+class symbol(object):
+  __pool__ = {}
+
+  def __new__(cls,name):
+    pool = cls.__pool__
+    if not name in pool:
+      sym = super(symbol,cls).__new__(cls)
+      sym.__symname__ = name
+      pool[name] = sym
+    return pool[name]
+
+  def __repr__(self):
+    return '<symbol %s>' % self.__symname__
+
+class symfactory(object):
+  def __getattribute__(self,name):
+    if '_' in name:
+      return super(symfactory,self).__getattribute__(name)
+    else:
+      return symbol(name)
+
+sym = symfactory()
+
+# Definitions
 
 # Functions
-def indent(elem, level=0):
-  i = "\n" + level*"  "
-  if len(elem):
-    if not elem.text or not elem.text.strip():
-      elem.text = i + "  "
-      for e in elem:
-        indent(e, level+1)
-        if not e.tail or not e.tail.strip():
-          e.tail = i + "  "
-      if not e.tail or not e.tail.strip():
-        e.tail = i
+
+def concat(list_of_strings):
+  return ''.join(list_of_strings)
+
+def flatten(l):
+  result = []
+  for x in l:
+    if isinstance(x, list):
+      result.extend(flatten(x))
+    else:
+      result.append(x)
+  return result
+
+def linify(text,delim='\n'):
+  if text is None or text == '':
+    return
+  for line in text.split(delim):
+    yield '<div style="margin-left: 1em">'
+    yield escape(line)
+    yield '</div>'
+  
+def iscompact(iolist,delim='\n'):
+  try:
+    if delim in iolist:
+      return False
+    for entry in iolist:
+      if not iscompact(entry):
+        return False
+  except TypeError: # Iteration Over Non Sequence / No 'in' Method Raises TypeError
+    pass
+  return True
+
+def getrootlist(tr):
+  root = tr.getroot()
+  while 1:
+    prev = root.getprevious()
+    if prev is None:
+      break
+    root = prev
+  rl = []
+  while 1:
+    rl.append(root)
+    next = root.getnext()
+    if next is None:
+      break
+    root = next
+  return rl
+
+def listify(el):
+  if el.tag is et.Comment:
+    yield '<div class="comment" style="margin-left: 1em">'
+    yield escape('<!--')
+    yield list(linify(el.text))
+    yield escape('-->')
+    yield '</div>'
+  elif el.tag is et.PI:
+    # EAT IT!
+    pass
+  elif isinstance(el.tag,StringTypes):
+    att = el.attrib
+    ctext = 'class="element"'
+    if 'comment' in att:
+      ctext = 'class="element hotzone"'
+      ctext += ' target=%s' % (quoteattr(att['comment']),)
+      del att['comment']
+    yield '<div %s style="margin-left: 1em">' % ctext
+    yield escape('<')
+    yield '<span class="tag">' + el.tag + '</span>'
+    kids = bool(len(el)) or el.text
+    for k,v in el.attrib.iteritems():
+      yield ' <span class="attrkey">'
+      yield escape(k)
+      yield '</span>=<span class="attrval">'
+      yield quoteattr(v)
+      yield '</span>'
+    if not kids:
+      yield escape(' />')
+    else:
+      yield escape('>')
+    for kid in el:
+      yield list(listify(kid))
+    yield list(linify(el.text))
+    if kids:
+      yield escape('</')
+      yield '<span class="tag">' + el.tag + '</span>'
+      yield escape('>')
+    yield '</div>'
   else:
-    if level and (not elem.tail or not elem.tail.strip()):
-      elem.tail = i
+    print "Warning, unknown element: %r" % el
+  yield list(linify(el.tail))
 
-def spitout(strm,elem):
-  attrib = elem.attrib
-  attrs = sorted(attrib)
-  cid = None
-  if elem.tag is et.Comment:
-    strm.write('<span class="comment">')
-    strm.write(escape('<!--%s-->%s' % (elem.text,elem.tail,)))
-    strm.write('</span>')
-    return
-  if 'comment' in attrib:
-    cid = attrib['comment']
-    del attrib['comment']
-    attrs.remove('comment')
-    strm.write('<span class="hotzone" target=%s>' % quoteattr(cid))
-  strm.write('<span class="tag">')
-  strm.write(escape('<') + \
-             '<span class="tagname" class=%s>%s</span>' % \
-               (quoteattr('tag_' + elem.tag),escape('%s' % elem.tag)) )
-  for a in attrs:
-    strm.write(
-      ' <span class="attrkey">' + escape(a) + '</span>=' + '<span class="attrval">' + \
-      escape('"%s"' % attrib[a]) + '</span>'
-    )
-  if not (elem.text or len(elem)):
-    strm.write(escape(" />") + '</span>')
-    if elem.tail:
-      strm.write(escape(elem.tail))
-    return
-  strm.write(escape(">") + '</span>')
-  if elem.text:
-    strm.write(escape(elem.text))
-  for el in elem:
-    spitout(strm,el)
-  strm.write(
-    '<span class="tag">' + escape("</") + \
-    '<span class="tagname" class=%s>%s</span>' % \
-      (quoteattr('tag_' + elem.tag),escape(elem.tag),) + \
-    escape(">") + '</span>')
-  if cid:
-    strm.write('</span>')
-  if elem.tail:
-    strm.write(escape(elem.tail))
-
+def convert(tr):
+  iolist = [ ['<div>',list(listify(el)),'</div>'] for el in getrootlist(tr) ]
+  return iolist
+  
 if __name__ == '__main__': # Not sure why this would be imported, but...just in case
   # Usage
   try:
@@ -83,6 +148,8 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
          determined by the suffix of the source file"""
     exit(1)
   
+  print >>stderr, "Initializing..."
+
   print >>stderr, "Parsing Comments..."
   cmt = open(cmt,"r")
   ctree = et.ElementTree(file=cmt)
@@ -106,8 +173,11 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   print >>stderr, "Parsing Input..."
   src = open(src,"r")
   stree = et.ElementTree(file=src)
-  sroot = stree.getroot()
-  indent(sroot)
+  iolist = convert(stree)
+  stlist = flatten(iolist)
+  st = concat(stlist)
+  #print st
+  #exit(0)
   
   print >>stderr, "Opening %s..." % dst
   
@@ -131,11 +201,12 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   print >>stderr, " .. xml"
   print >>dst,'      <div id="escapedxml"><div class="pad">'
   print >>dst,'        <h1 class="title">%s</h1>' % escape(title)
-  print >>dst,'        <div class="xmlcontent"><pre>'
+  print >>dst,'        <div class="xmlcontent" style="font-family: Courier, monospace;">'
   
-  spitout(dst,sroot)
-  
-  print >>dst,'        </pre></div>'
+  #FIXME
+  print >>dst, st
+
+  print >>dst,'        </div>'
   print >>dst,'      </div></div>'
   print >>dst,'      <div id="commentaccordian"><div class="pad">'
   

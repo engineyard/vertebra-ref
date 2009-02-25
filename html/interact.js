@@ -35,22 +35,36 @@ $(function(){
 
   // Hover Highlighting of Text
   $('.hotzone').mouseover(function(event){
-    $(this).removeClass('hovered');
+    for (i = 0; i < 10; i++) {
+      $(this).removeClass('hovered' + i);
+      $('.thover'+i).removeClass('thover'+i);
+    };
   });
   $('.hotzone').mouseout(function(event){
-    $(this).removeClass('hovered');
+    for (i = 0; i < 10; i++) {
+      $(this).removeClass('hovered' + i);
+      $('.thover'+i).removeClass('thover'+i);
+    };
   });
   $('.hotzone').mouseover(function(event){
-    var targets = $(this).attr('target').split(',');
-    var count = 0;
-    for (i=0;i<targets.length;i++) {
-      var target = $('#comment_' + targets[i]);
-      count += target.size();
-    };
-    $(this).addClass('hovered');
-    if (count) {
-      event.stopPropagation();
-    };
+    var parent = $(this);
+    var i = 0;
+    var targets;
+
+    do {
+      if (parent.hasClass('hotzone')) {
+        parent.addClass('hovered' + i);
+        i++;
+        targets = parent.attr('target').split(',');
+        for (j = 0; j<targets.length; j++) {
+          var target = $('#comment_' + targets[j]);
+          target.addClass('thover' + i);
+        };
+      }
+      parent = parent.parent()
+    } while (parent.size());
+
+    event.stopPropagation();
   });
 
   // Fall-through Reset Functionality
