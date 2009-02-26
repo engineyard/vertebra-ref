@@ -53,7 +53,7 @@ def linify(text,delim='\n'):
   if text is None or text == '':
     return
   for line in text.split(delim):
-    yield '<div style="margin-left: 1em">'
+    yield '<div style="margin-left: 1em; margin-right: 1em;">'
     yield escape(line)
     yield '</div>'
   
@@ -86,7 +86,7 @@ def getrootlist(tr):
 
 def listify(el):
   if el.tag is et.Comment:
-    yield '<div class="comment" style="margin-left: 1em">'
+    yield '<div class="comment" style="margin-left: 1em; margin-right: 1em">'
     yield escape('<!--')
     yield list(linify(el.text))
     yield escape('-->')
@@ -101,7 +101,7 @@ def listify(el):
       ctext = 'class="element hotzone"'
       ctext += ' target=%s' % (quoteattr(att['comment']),)
       del att['comment']
-    yield '<div %s style="margin-left: 1em">' % ctext
+    yield '<div %s style="margin-left: 1em; margin-right: 1em">' % ctext
     yield escape('<')
     yield '<span class="tag">' + el.tag + '</span>'
     kids = bool(len(el)) or el.text
