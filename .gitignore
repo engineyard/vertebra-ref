@@ -1,4 +1,3 @@
-.*.swp
 *.toc
 *.lot
 *.lof
@@ -29,3 +28,4 @@ INSTALL
 interim.pdf
 vertebra.pdf
 .DS_Store
+.*.swp
