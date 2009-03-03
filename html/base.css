@@ -51,7 +51,7 @@ html body {
 }
 
 .hotzone {
-  cursor: help;
+  cursor: pointer;
 }
 
 .indent {
