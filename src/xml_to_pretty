@@ -33,6 +33,8 @@ class symfactory(object):
 
 sym = symfactory()
 
+BREAK = sym.BREAK
+
 # Definitions
 
 # Functions
@@ -40,10 +42,19 @@ sym = symfactory()
 def concat(list_of_strings):
   return ''.join(list_of_strings)
 
+def multi(l):
+  if BREAK in l:
+    return True
+  if isinstance(l,list):
+    return any( [ multi(x) for x in l if isinstance(x,list) ] )
+  return False
+
 def flatten(l):
   result = []
   for x in l:
-    if isinstance(x, list):
+    if isinstance(x, symbol):
+      pass # Skip Sentinel Values
+    elif isinstance(x, list):
       result.extend(flatten(x))
     else:
       result.append(x)
@@ -52,21 +63,24 @@ def flatten(l):
 def linify(text,delim='\n'):
   if text is None or text == '':
     return
-  for line in text.split(delim):
-    yield '<div style="margin-left: 1em; margin-right: 1em;">'
+  first = True
+  splt = text.split(delim)
+  mult = len(splt) > 1
+  if not splt[0].strip():
+    del splt[0]
+  if splt and not splt[-1].strip():
+    del splt[-1]
+    yield BREAK
+  for line in splt:
+    if mult:
+      yield '<div class="indent">'
     yield escape(line)
-    yield '</div>'
-  
-def iscompact(iolist,delim='\n'):
-  try:
-    if delim in iolist:
-      return False
-    for entry in iolist:
-      if not iscompact(entry):
-        return False
-  except TypeError: # Iteration Over Non Sequence / No 'in' Method Raises TypeError
-    pass
-  return True
+    if first:
+      first = False
+    else:
+      yield BREAK
+    if mult:
+      yield '</div>'
 
 def getrootlist(tr):
   root = tr.getroot()
@@ -85,47 +99,65 @@ def getrootlist(tr):
   return rl
 
 def listify(el):
+  tail = list(linify(el.tail))
   if el.tag is et.Comment:
-    yield '<div class="comment" style="margin-left: 1em; margin-right: 1em">'
+    lines = list(linify(el.text))
+    mult = multi(lines) or multi(tail)
+    if mult:
+      yield '<div class="comment indent">'
+    else:
+      yield '<span class="comment">'
     yield escape('<!--')
-    yield list(linify(el.text))
+    yield lines
     yield escape('-->')
-    yield '</div>'
+    if mult:
+      yield '</div>'
+    else:
+      yield '</span>'
   elif el.tag is et.PI:
     # EAT IT!
     pass
   elif isinstance(el.tag,StringTypes):
+    kids = []
     att = el.attrib
-    ctext = 'class="element"'
+    ctext = 'class="element%s"'
+    text = list(linify(el.text))
+    for kid in el:
+      kids.extend(listify(kid))
+    mult = multi(kids) or multi(tail)
     if 'comment' in att:
-      ctext = 'class="element hotzone"'
+      ctext = 'class="element hotzone%s"'
       ctext += ' target=%s' % (quoteattr(att['comment']),)
       del att['comment']
-    yield '<div %s style="margin-left: 1em; margin-right: 1em">' % ctext
+    if mult:
+      yield '<div %s>' % (ctext % " indent")
+    else:
+      yield '<span %s>' % (ctext % '')
     yield escape('<')
     yield '<span class="tag">' + el.tag + '</span>'
-    kids = bool(len(el)) or el.text
     for k,v in el.attrib.iteritems():
       yield ' <span class="attrkey">'
       yield escape(k)
       yield '</span>=<span class="attrval">'
       yield quoteattr(v)
       yield '</span>'
-    if not kids:
+    if not (kids or el.text):
       yield escape(' />')
     else:
       yield escape('>')
-    for kid in el:
-      yield list(listify(kid))
-    yield list(linify(el.text))
-    if kids:
+    yield text
+    yield kids
+    if (kids or el.text):
       yield escape('</')
       yield '<span class="tag">' + el.tag + '</span>'
       yield escape('>')
-    yield '</div>'
+    if mult:
+      yield '</div>'
+    else:
+      yield '</span>'
   else:
     print "Warning, unknown element: %r" % el
-  yield list(linify(el.tail))
+  yield tail
 
 def convert(tr):
   iolist = [ ['<div>',list(listify(el)),'</div>'] for el in getrootlist(tr) ]
@@ -176,8 +208,6 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   iolist = convert(stree)
   stlist = flatten(iolist)
   st = concat(stlist)
-  #print st
-  #exit(0)
   
   print >>stderr, "Opening %s..." % dst
   
@@ -203,7 +233,6 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   print >>dst,'        <h1 class="title">%s</h1>' % escape(title)
   print >>dst,'        <div class="xmlcontent" style="font-family: Courier, monospace;">'
   
-  #FIXME
   print >>dst, st
 
   print >>dst,'        </div>'

@@ -53,3 +53,9 @@ html body {
 .hotzone {
   cursor: help;
 }
+
+.indent {
+  margin-left: 1em;
+  margin-right: 1em;
+  min-height: 1em;
+}
