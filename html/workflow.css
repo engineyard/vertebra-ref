@@ -13,7 +13,7 @@
 }
 
 .tag {
-  color: LightSeaGreen;
+  color: Fuchsia;
 }
 
 .attrkey {
@@ -25,49 +25,53 @@
 }
 
 .hovered0 {
-  background-color: #660000;
+  background-color: DarkRed;
 }
 
 .hovered1 {
-  background-color: #550000;
+  background-color: DarkGreen;
 }
 
 .hovered2 {
-  background-color: #440000;
+  background-color: Purple;
 }
 
 .hovered3 {
-  background-color: #330000;
+  background-color: DarkSlateBlue;
 }
 
 .hovered4 {
-  background-color: #220000;
+  background-color: LawnGreen;
 }
 
 .hovered5 {
-  background-color: #110000;
+  background-color: PowderBlue;
 }
 
-.thover0 {
-  background:   #660000;
+.tochead {
+  border-bottom: 0.2em solid Navy;
 }
 
-.thover1 {
-  background:   #550000;
+.thover0 .tochead {
+  border-bottom: 0.2em solid DarkRed;
 }
 
-.thover2 {
-  background:   #440000;
+.thover1 .tochead {
+  border-bottom: 0.2em solid DarkGreen;
 }
 
-.thover3 {
-  background:   #330000;
+.thover2 .tochead {
+  border-bottom: 0.2em solid Purple;
 }
 
-.thover4 {
-  background:   #220000;
+.thover3 .tochead {
+  border-bottom: 0.2em solid DarkSlateBlue;
 }
 
-.thover5 {
-  background:   #110000;
+.thover4 .tochead {
+  border-bottom: 0.2em solid LawnGreen;
+}
+
+.thover5 .tochead {
+  border-bottom: 0.2em solid PowderBlue;
 }
