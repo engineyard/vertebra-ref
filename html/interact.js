@@ -54,12 +54,12 @@ $(function(){
     do {
       if (parent.hasClass('hotzone')) {
         parent.addClass('hovered' + i);
-        i++;
         targets = parent.attr('target').split(',');
         for (j = 0; j<targets.length; j++) {
           var target = $('#comment_' + targets[j]);
           target.addClass('thover' + i);
         };
+        i++;
       }
       parent = parent.parent()
     } while (parent.size());
