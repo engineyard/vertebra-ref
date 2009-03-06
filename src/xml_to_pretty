@@ -237,7 +237,7 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
 
   print >>dst,'        </div>'
   print >>dst,'      </div></div>'
-  print >>dst,'      <div id="commentaccordian"><div class="pad">'
+  print >>dst,'      <div id="commentpane"><div class="pad">'
   
   print >>dst,'        <div class="commenthdr" id="header"><p>Click title to see all comments.</p><p>Click individual element text to reveal comments limited to a certain location.</p></div>'
   print >>dst,'        <div class="commenthdr" id="toc"><h3 id="toctitle">Contents</h3><ul id="toclist"></ul></div>'

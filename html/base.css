@@ -23,7 +23,7 @@ html body {
   overflow:auto;
 }
 
-#commentaccordian {
+#commentpane {
   position:absolute;
   top:0;
   bottom:0;
