@@ -103,17 +103,11 @@ def listify(el):
   if el.tag is et.Comment:
     lines = list(linify(el.text))
     mult = multi(lines) or multi(tail)
-    if mult:
-      yield '<div class="comment indent">'
-    else:
-      yield '<span class="comment">'
+    yield '<span class="comment">'
     yield escape('<!--')
     yield lines
     yield escape('-->')
-    if mult:
-      yield '</div>'
-    else:
-      yield '</span>'
+    yield '</span>'
   elif el.tag is et.PI:
     # EAT IT!
     pass
@@ -126,13 +120,13 @@ def listify(el):
       kids.extend(listify(kid))
     mult = multi(kids) or multi(tail)
     if 'comment' in att:
-      ctext = 'class="element hotzone%s"'
+      ctext = 'class="element hotzone"'
       ctext += ' target=%s' % (quoteattr(att['comment']),)
       del att['comment']
     if mult:
-      yield '<div %s>' % (ctext % " indent")
+      yield '<div %s>' % ctext
     else:
-      yield '<span %s>' % (ctext % '')
+      yield '<span %s>' % ctext
     yield escape('<')
     yield '<span class="tag">' + el.tag + '</span>'
     for k,v in el.attrib.iteritems():
@@ -146,7 +140,11 @@ def listify(el):
     else:
       yield escape('>')
     yield text
+    if kids and mult:
+      yield '<div class="indent">'
     yield kids
+    if kids and mult:
+      yield '</div>'
     if (kids or el.text):
       yield escape('</')
       yield '<span class="tag">' + el.tag + '</span>'
@@ -226,26 +224,26 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
       <script type="text/javascript" src="interact.js"></script>
     </head>
     <body>
-      <div id="wrap">""" % (title,css)
+      <div id="frame">""" % (title,css)
   
   print >>stderr, " .. xml"
-  print >>dst,'      <div id="escapedxml"><div class="pad">'
+  print >>dst,'      <div id="escapedxml">'
   print >>dst,'        <h1 class="title">%s</h1>' % escape(title)
   print >>dst,'        <div class="xmlcontent" style="font-family: Courier, monospace;">'
   
   print >>dst, st
 
   print >>dst,'        </div>'
-  print >>dst,'      </div></div>'
-  print >>dst,'      <div id="commentpane"><div class="pad">'
+  print >>dst,'      </div>'
+  print >>dst,'      <div id="commentpane">'
   
   print >>dst,'        <div class="commenthdr" id="header"><p>Click title to see all comments.</p><p>Click individual element text to reveal comments limited to a certain location.</p></div>'
-  print >>dst,'        <div class="commenthdr" id="toc"><h3 id="toctitle">Contents</h3><ul id="toclist"></ul></div>'
+  print >>dst,'        <div class="commenthdr" id="toc"><h3 id="toctitle">Topics</h3><ul id="toclist"></ul></div>'
   for cname,ctext in comments:
-    print >>dst,'        <div class="commentbox" id=%s>%s</div>' \
+    print >>dst,'      <div class="commentbox" id=%s>%s</div>' \
                                                                     % (quoteattr('comment_'+cname),ctext,)
   
-  print >>dst,'      </div></div>'
+  print >>dst,'      </div>'
   
   print >>stderr, " .. footer"
   print >>dst, "    </div>"
