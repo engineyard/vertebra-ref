@@ -5,9 +5,11 @@
 # Licensed under the GNU Lesser General Public License, 3.0
 from xml.sax.saxutils import escape,quoteattr
 from lxml import etree as et
-from sys import argv,exit,stderr
+from sys import argv,exit,stderr,exc_info
 from types import StringTypes
 from functools import reduce
+import re
+from os import sep as psep,extsep
 
 # Helper Classes
 class symbol(object):
@@ -162,14 +164,37 @@ def convert(tr):
   return iolist
   
 if __name__ == '__main__': # Not sure why this would be imported, but...just in case
+  htmlname = re.compile('.*'+re.escape(extsep)+'html$')
   # Usage
   try:
-    (src,cmt,dst) = argv[1:]
+    args = argv[1:]
+    if len(args) == 3: # absolute filenames
+      (src,cmt,dst) = args
+    elif len(args) == 1: # relative filename
+      try:
+        (base,ext) = args[0].rsplit(extsep,1)
+      except:
+        raise ValueError("Error parsing relative filename")
+      src = 'src'  + psep + base + extsep + ext
+      cmt = 'src'  + psep + base + extsep + 'cmt'
+      dst = 'html' + psep + base + extsep + 'html'
+    else:
+      raise ValueError("Invalid number of arguments!")
+    print dst, htmlname.pattern
+    if not htmlname.match(dst):
+      raise ValueError("Destination file must have .html extension!")
   except:
-    print >>stderr, """usage: xml_to_pretty <source> <comment> <destination>"
-         <source> should be a file containing an XML document to be highlighted
-         <comment> should be xml with <comment> tags
-         <destination> should be the file to generate XML into
+    print str(exc_info()[1])
+    print
+    print >>stderr, """usage: xml_to_pretty { <source> <comment> <destination> | <basename> }"
+         <source> should be a file containing an XML example (must have some extension)
+         <comment> should be xml with <comment> tags to annotate the highlighted XML output
+         <destination> should be the file to generate XHTML into (suffix MUST be .html)
+
+         --OR--
+
+         <basename> should be a bare source filename that will be extrapolated into real filenames
+                    (e.g. workflow.vwf <==> src/workflow.vwf src/workflow.cmt html/workflow.html)
   
          The comment XML may have a title attribute on the root element that
          will be used as the title of the generated html page
