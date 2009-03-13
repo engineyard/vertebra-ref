@@ -6,7 +6,8 @@ considered comprehensive, nor complete, nor final.
 
 To build the TeX docs on MacOS, you'll probably want gwTex, installed from the
 i-Installer program.  If you don't use a bigger Tex distribution, you may need
-nomencl.sty, makerow.sty, and a few others.
+nomencl.sty, makerow.sty, and a few others.  Many of these dependencies are
+included in the texlive distribution, which gwTex uses.
 
 There is also an html directory containing some stand-alone documentation that
 is better illustrated outside of the TeX sources.
