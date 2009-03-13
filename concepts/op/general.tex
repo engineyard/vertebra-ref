@@ -6,14 +6,14 @@
 
 \subsection{Structure}
 
-Everything that happens in Vertebra is an \operation{}.\nomenclature{operation}{Vertebra's fundamental unit of work}  Conceptually, \operations{} are the fundamental unit of         extbf{work} in Vertebra.  With the exception of some infrastructure (i.e. direct \operations{}), they are all general \operations{}.  A general operation takes place in a few phases that provide various execution guarantees.
+Everything that happens in Vertebra is an \operation{}.\nomenclature{operation}{Vertebra's fundamental unit of work}  Conceptually, \operations{} are the fundamental unit of \textbf{work} in Vertebra.  With the exception of some infrastructure (i.e. direct \operations{}), they are all general \operations{}.  A general operation takes place in a few phases that provide various execution guarantees.
 
 An operation consists of the components listed in table \ref{tbl:op-parts}.
 
 \begin{table}
         \begin{center}
-                \begin{tabular}{|p{0.35        extwidth}|p{0.55        extwidth}|}
-                        \hline         extbf{Component} &         extbf{Description} \\
+                \begin{tabular}{|p{0.35\textwidth}|p{0.55\textwidth}|}
+                        \hline \textbf{Component} & \textbf{Description} \\
                         \hline
                         \hline Scope      & a string that determines the dispatch and completion requirements of the operation \\
                         \hline Type       & a string that determines which operation is dispatched \\
@@ -30,12 +30,12 @@ An operation consists of the components listed in table \ref{tbl:op-parts}.
 The life of an operation goes through various states, as shown in figure \ref{fig:op-states}.
 
 \begin{itemize}
-        \item         extbf{New} --- Operation has been requested but has not started.
-        \item         extbf{Ack} --- Operation has been acknowledged as allowed and may be starting.
-        \item         extbf{Nack} --- Operation has been denied due to security policy, operation-specific issue, due to load, or due to old discovery information.
-        \item         extbf{Run} --- Operation is executing.
-        \item         extbf{Done} --- Operation has finished.
-        \item         extbf{Error} --- Operation has failed at an application level.
+        \item \textbf{New} --- Operation has been requested but has not started.
+        \item \textbf{Ack} --- Operation has been acknowledged as allowed and may be starting.
+        \item \textbf{Nack} --- Operation has been denied due to security policy, operation-specific issue, due to load, or due to old discovery information.
+        \item \textbf{Run} --- Operation is executing.
+        \item \textbf{Done} --- Operation has finished.
+        \item \textbf{Error} --- Operation has failed at an application level.
 \end{itemize}
 
 \begin{figure}
