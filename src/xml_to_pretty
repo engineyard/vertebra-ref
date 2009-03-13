@@ -52,12 +52,25 @@ def multi(l):
   return False
 
 def flatten(l):
-  result = []
   for x in l:
-    if isinstance(x, symbol):
-      pass # Skip Sentinel Values
-    elif isinstance(x, list):
-      result.extend(flatten(x))
+    if isinstance(x,list):
+      for y in flatten(x):
+        yield y
+    else:
+      yield x
+
+def iostream(j):
+  result = []
+  k = list(flatten(j)) # Flatten into single stream
+  l = [x for x in k if x] # Filter out empty strings
+  print l
+  while l:
+    x = l[0]; del l[0]
+    if x is BREAK: # Spacer for Line Break
+      if l and l[0] is BREAK:
+        result.extend('<div class="break" style="min-height:1em;"></div>')
+    elif isinstance(x, symbol):
+      pass # Skip Unknown Sentinel Values
     else:
       result.append(x)
   return result
@@ -75,7 +88,7 @@ def linify(text,delim='\n'):
     yield BREAK
   for line in splt:
     if mult:
-      yield '<div class="indent">'
+      yield '<div class="cdata">'
     yield escape(line)
     if first:
       first = False
@@ -141,7 +154,13 @@ def listify(el):
       yield escape(' />')
     else:
       yield escape('>')
-    yield text
+    if text:
+      if multi(text) and not text == [BREAK]:
+        yield '<div class="indent">'
+        yield text
+        yield '</div>'
+      else:
+         yield text
     if kids and mult:
       yield '<div class="indent">'
     yield kids
@@ -170,6 +189,10 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
     args = argv[1:]
     if len(args) == 3: # absolute filenames
       (src,cmt,dst) = args
+      try:
+        (base,ext) = args[0].rsplit(extsep,1)
+      except:
+        raise ValueError("Error parsing absolute filename")
     elif len(args) == 1: # relative filename
       try:
         (base,ext) = args[0].rsplit(extsep,1)
@@ -186,17 +209,18 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   except:
     print str(exc_info()[1])
     print
-    print >>stderr, """usage: xml_to_pretty { <source> <comment> <destination> | <basename> }"
-         <source> should be a file containing an XML example (must have some extension)
+    print >>stderr, \
+"""usage:   xml_to_pretty { <source>.<ext> <comment>.cmt <destination>.html | <basename>.<ext> }
+         <source> should be a file containing an XML example
          <comment> should be xml with <comment> tags to annotate the highlighted XML output
-         <destination> should be the file to generate XHTML into (suffix MUST be .html)
+         <destination> should be the file to generate XHTML into
 
          --OR--
 
          <basename> should be a bare source filename that will be extrapolated into real filenames
                     (e.g. workflow.vwf <==> src/workflow.vwf src/workflow.cmt html/workflow.html)
   
-         The comment XML may have a title attribute on the root element that
+         The comment XML may have a title attribute on the root element, the text of which
          will be used as the title of the generated html page
   
          The generated XML will include links to jquery.js and a stylesheet
@@ -223,13 +247,13 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   # Get title of page and css, with sensible defaults
   cattr = ctree.getroot().attrib
   title = escape(cattr.get("title",src))
-  css = cattr.get("css","xml") + ".css"
+  css = ext + extsep + "css"
   
   print >>stderr, "Parsing Input..."
   src = open(src,"r")
   stree = et.ElementTree(file=src)
   iolist = convert(stree)
-  stlist = flatten(iolist)
+  stlist = iostream(iolist)
   st = concat(stlist)
   
   print >>stderr, "Opening %s..." % dst

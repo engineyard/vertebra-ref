@@ -1,0 +1,77 @@
+.title {
+  color:white;
+}
+
+.xmlcontent {
+  background-color: black;
+  color: #aaaaaa;
+  padding: 1em;
+}
+
+.comment {
+  color: #555555;
+}
+
+.tag {
+  color: Fuchsia;
+}
+
+.attrkey {
+  color: cyan;
+}
+
+.attrval {
+  color: yellow;
+}
+
+.hovered0 {
+  background-color: DarkRed;
+}
+
+.hovered1 {
+  background-color: DarkGreen;
+}
+
+.hovered2 {
+  background-color: Purple;
+}
+
+.hovered3 {
+  background-color: DarkSlateBlue;
+}
+
+.hovered4 {
+  background-color: LawnGreen;
+}
+
+.hovered5 {
+  background-color: PowderBlue;
+}
+
+.tochead {
+  border-bottom: 0.2em solid Navy;
+}
+
+.thover0 .tochead {
+  border-bottom: 0.2em solid DarkRed;
+}
+
+.thover1 .tochead {
+  border-bottom: 0.2em solid DarkGreen;
+}
+
+.thover2 .tochead {
+  border-bottom: 0.2em solid Purple;
+}
+
+.thover3 .tochead {
+  border-bottom: 0.2em solid DarkSlateBlue;
+}
+
+.thover4 .tochead {
+  border-bottom: 0.2em solid LawnGreen;
+}
+
+.thover5 .tochead {
+  border-bottom: 0.2em solid PowderBlue;
+}
