@@ -23,16 +23,21 @@ EXTRA_DIST = $(CORE) $(COMPONENTS) $(CONCEPTS) $(MATH) $(PROTO) $(USE) \
 all-local:
 	$(MAKE) clean_intermediate
 
-%.pdf: %.dot
-	$(DOT) -Tpdf -o $@ $<
+%.pdf: %.eps
+	$(PS2PDF) $< $@
 
-%.pdf: %.twopi
-	$(TWOPI) -Tpdf -o $@ $<
+%.eps: %.dot
+	$(DOT) -Tps2 -o $@ $<
 
-%.pdf: %.neato
-	$(NEATO) -Tpdf -o $@ $<
+%.eps: %.twopi
+	$(TWOPI) -Tps2 -o $@ $<
 
-vertebra.pdf: $(CORE) $(COMPONENTS) $(FIGS) $(CONCEPTS) $(MATH) $(PROTO) $(USE)
+%.eps: %.neato
+	$(NEATO) -Tps2 -o $@ $<
+
+figs: $(FIGS)
+
+vertebra.pdf: $(CORE) $(COMPONENTS) figs $(CONCEPTS) $(MATH) $(PROTO) $(USE)
 	$(PDFLATEX) vertebra.tex
 	$(MAKEINDEX) vertebra.idx -o vertebra.ind
 	$(MAKEINDEX) vertebra.tdx -o vertebra.tnd
