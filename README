@@ -1,8 +1,21 @@
+Short Version
+=============
+
+# aclocal ; automake ; autoconf ; ./configure ; make ; sudo make install
+
+Will build all docs that it can.  Installs PDFs and HTML docs in:
+
+  ${prefix}/doc/vertebra
+
+Long Version
+============
+
 The autoconf system currently creates a vertebra.pdf document that describes
 the overall design of Vertebra.  This document is built using TeX and a few
 support utilities for the figures (most notably GraphViz).  OmniGraffle source
 is included for some manually produced figures.  This manual is not yet
-considered comprehensive, nor complete, nor final.
+considered comprehensive, nor complete, nor final.  The beginnings of work
+to generate HTML documentation are also present.
 
 To build the TeX docs on MacOS, use MacPorts.  Everything I needed was there.
 Try the following packages (note the variants!):
