@@ -28,11 +28,12 @@ html body {
   top:0;
   bottom:0;
   right:0;
-  width:400px;
+  width:370px; /* Main Pane Right - 2 * My Border */
   height:100%;
   overflow:auto;
   background:navy;
   color:white;
+  border: navy solid 15px;
 }
 
 .commentbox {
@@ -46,10 +47,6 @@ html body {
   background-color:#bbbbbb;
 }
 
-.pad {
-  margin:15px;
-}
-
 .hotzone {
   cursor: pointer;
 }
@@ -58,4 +55,5 @@ html body {
   margin-left: 1em;
   margin-right: 1em;
   min-height: 1em;
+  border: 0.1em solid black;
 }

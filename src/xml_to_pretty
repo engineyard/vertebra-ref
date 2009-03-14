@@ -5,9 +5,11 @@
 # Licensed under the GNU Lesser General Public License, 3.0
 from xml.sax.saxutils import escape,quoteattr
 from lxml import etree as et
-from sys import argv,exit,stderr
+from sys import argv,exit,stderr,exc_info
 from types import StringTypes
 from functools import reduce
+import re
+from os import sep as psep,extsep
 
 # Helper Classes
 class symbol(object):
@@ -50,12 +52,25 @@ def multi(l):
   return False
 
 def flatten(l):
-  result = []
   for x in l:
-    if isinstance(x, symbol):
-      pass # Skip Sentinel Values
-    elif isinstance(x, list):
-      result.extend(flatten(x))
+    if isinstance(x,list):
+      for y in flatten(x):
+        yield y
+    else:
+      yield x
+
+def iostream(j):
+  result = []
+  k = list(flatten(j)) # Flatten into single stream
+  l = [x for x in k if x] # Filter out empty strings
+  print l
+  while l:
+    x = l[0]; del l[0]
+    if x is BREAK: # Spacer for Line Break
+      if l and l[0] is BREAK:
+        result.extend('<div class="break" style="min-height:1em;"></div>')
+    elif isinstance(x, symbol):
+      pass # Skip Unknown Sentinel Values
     else:
       result.append(x)
   return result
@@ -73,7 +88,7 @@ def linify(text,delim='\n'):
     yield BREAK
   for line in splt:
     if mult:
-      yield '<div class="indent">'
+      yield '<div class="cdata">'
     yield escape(line)
     if first:
       first = False
@@ -103,17 +118,11 @@ def listify(el):
   if el.tag is et.Comment:
     lines = list(linify(el.text))
     mult = multi(lines) or multi(tail)
-    if mult:
-      yield '<div class="comment indent">'
-    else:
-      yield '<span class="comment">'
+    yield '<span class="comment">'
     yield escape('<!--')
     yield lines
     yield escape('-->')
-    if mult:
-      yield '</div>'
-    else:
-      yield '</span>'
+    yield '</span>'
   elif el.tag is et.PI:
     # EAT IT!
     pass
@@ -126,13 +135,13 @@ def listify(el):
       kids.extend(listify(kid))
     mult = multi(kids) or multi(tail)
     if 'comment' in att:
-      ctext = 'class="element hotzone%s"'
+      ctext = 'class="element hotzone"'
       ctext += ' target=%s' % (quoteattr(att['comment']),)
       del att['comment']
     if mult:
-      yield '<div %s>' % (ctext % " indent")
+      yield '<div %s>' % ctext
     else:
-      yield '<span %s>' % (ctext % '')
+      yield '<span %s>' % ctext
     yield escape('<')
     yield '<span class="tag">' + el.tag + '</span>'
     for k,v in el.attrib.iteritems():
@@ -145,8 +154,18 @@ def listify(el):
       yield escape(' />')
     else:
       yield escape('>')
-    yield text
+    if text:
+      if multi(text) and not text == [BREAK]:
+        yield '<div class="indent">'
+        yield text
+        yield '</div>'
+      else:
+         yield text
+    if kids and mult:
+      yield '<div class="indent">'
     yield kids
+    if kids and mult:
+      yield '</div>'
     if (kids or el.text):
       yield escape('</')
       yield '<span class="tag">' + el.tag + '</span>'
@@ -164,16 +183,44 @@ def convert(tr):
   return iolist
   
 if __name__ == '__main__': # Not sure why this would be imported, but...just in case
+  htmlname = re.compile('.*'+re.escape(extsep)+'html$')
   # Usage
   try:
-    (src,cmt,dst) = argv[1:]
+    args = argv[1:]
+    if len(args) == 3: # absolute filenames
+      (src,cmt,dst) = args
+      try:
+        (base,ext) = args[0].rsplit(extsep,1)
+      except:
+        raise ValueError("Error parsing absolute filename")
+    elif len(args) == 1: # relative filename
+      try:
+        (base,ext) = args[0].rsplit(extsep,1)
+      except:
+        raise ValueError("Error parsing relative filename")
+      src = 'src'  + psep + base + extsep + ext
+      cmt = 'src'  + psep + base + extsep + 'cmt'
+      dst = 'html' + psep + base + extsep + 'html'
+    else:
+      raise ValueError("Invalid number of arguments!")
+    print dst, htmlname.pattern
+    if not htmlname.match(dst):
+      raise ValueError("Destination file must have .html extension!")
   except:
-    print >>stderr, """usage: xml_to_pretty <source> <comment> <destination>"
-         <source> should be a file containing an XML document to be highlighted
-         <comment> should be xml with <comment> tags
-         <destination> should be the file to generate XML into
+    print str(exc_info()[1])
+    print
+    print >>stderr, \
+"""usage:   xml_to_pretty { <source>.<ext> <comment>.cmt <destination>.html | <basename>.<ext> }
+         <source> should be a file containing an XML example
+         <comment> should be xml with <comment> tags to annotate the highlighted XML output
+         <destination> should be the file to generate XHTML into
+
+         --OR--
+
+         <basename> should be a bare source filename that will be extrapolated into real filenames
+                    (e.g. workflow.vwf <==> src/workflow.vwf src/workflow.cmt html/workflow.html)
   
-         The comment XML may have a title attribute on the root element that
+         The comment XML may have a title attribute on the root element, the text of which
          will be used as the title of the generated html page
   
          The generated XML will include links to jquery.js and a stylesheet
@@ -200,13 +247,13 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
   # Get title of page and css, with sensible defaults
   cattr = ctree.getroot().attrib
   title = escape(cattr.get("title",src))
-  css = cattr.get("css","xml") + ".css"
+  css = ext + extsep + "css"
   
   print >>stderr, "Parsing Input..."
   src = open(src,"r")
   stree = et.ElementTree(file=src)
   iolist = convert(stree)
-  stlist = flatten(iolist)
+  stlist = iostream(iolist)
   st = concat(stlist)
   
   print >>stderr, "Opening %s..." % dst
@@ -226,26 +273,26 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
       <script type="text/javascript" src="interact.js"></script>
     </head>
     <body>
-      <div id="wrap">""" % (title,css)
+      <div id="frame">""" % (title,css)
   
   print >>stderr, " .. xml"
-  print >>dst,'      <div id="escapedxml"><div class="pad">'
+  print >>dst,'      <div id="escapedxml">'
   print >>dst,'        <h1 class="title">%s</h1>' % escape(title)
   print >>dst,'        <div class="xmlcontent" style="font-family: Courier, monospace;">'
   
   print >>dst, st
 
   print >>dst,'        </div>'
-  print >>dst,'      </div></div>'
-  print >>dst,'      <div id="commentpane"><div class="pad">'
+  print >>dst,'      </div>'
+  print >>dst,'      <div id="commentpane">'
   
   print >>dst,'        <div class="commenthdr" id="header"><p>Click title to see all comments.</p><p>Click individual element text to reveal comments limited to a certain location.</p></div>'
-  print >>dst,'        <div class="commenthdr" id="toc"><h3 id="toctitle">Contents</h3><ul id="toclist"></ul></div>'
+  print >>dst,'        <div class="commenthdr" id="toc"><h3 id="toctitle">Topics</h3><ul id="toclist"></ul></div>'
   for cname,ctext in comments:
-    print >>dst,'        <div class="commentbox" id=%s>%s</div>' \
+    print >>dst,'      <div class="commentbox" id=%s>%s</div>' \
                                                                     % (quoteattr('comment_'+cname),ctext,)
   
-  print >>dst,'      </div></div>'
+  print >>dst,'      </div>'
   
   print >>stderr, " .. footer"
   print >>dst, "    </div>"
