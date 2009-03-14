@@ -4,10 +4,12 @@ support utilities for the figures (most notably GraphViz).  OmniGraffle source
 is included for some manually produced figures.  This manual is not yet
 considered comprehensive, nor complete, nor final.
 
-To build the TeX docs on MacOS, you'll probably want gwTex, installed from the
-i-Installer program.  If you don't use a bigger Tex distribution, you may need
-nomencl.sty, makerow.sty, and a few others.  Many of these dependencies are
-included in the texlive distribution, which gwTex uses.
+To build the TeX docs on MacOS, use MacPorts.  Everything I needed was there.
+Try the following packages (note the variants!):
+
+* texlive_base +no_x11 (X11 never seems to build for me)
+* texlive +letter (to set the system page size to US Letter)
+* graphviz (for figures)
 
 To build the TeX docs on Linux, you'll need some packages.  So far, I've tried
 with Debian lenny.  I needed the following packages and their dependencies:
