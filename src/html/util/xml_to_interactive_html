@@ -5,11 +5,14 @@
 # Licensed under the GNU Lesser General Public License, 3.0
 from xml.sax.saxutils import escape,quoteattr
 from lxml import etree as et
-from sys import argv,exit,stderr,exc_info
+from sys import argv,exit,stderr,exc_info,version_info
 from types import StringTypes
-from functools import reduce
 import re
 from os import sep as psep,extsep
+
+# Load Reduce from FuncTools on Newer Pythons
+if version_info[:2] >= (2,6):
+  from functools import reduce
 
 # Helper Classes
 class symbol(object):
@@ -210,21 +213,23 @@ if __name__ == '__main__': # Not sure why this would be imported, but...just in 
     print str(exc_info()[1])
     print
     print >>stderr, \
-"""usage:   xml_to_pretty { <source>.<ext> <comment>.cmt <destination>.html | <basename>.<ext> }
-         <source> should be a file containing an XML example
-         <comment> should be xml with <comment> tags to annotate the highlighted XML output
-         <destination> should be the file to generate XHTML into
+"""usage: xml_to_interactive_html <source>.<ext> <comment>.cmt <destination>.html 
+       xml_to_interactive_html <basename>.<ext>
+       <source> should be a file containing an XML example
+       <comment> should be xml with <comment> tags to annotate the highlighted XML output
+       <destination> should be the file to generate XHTML into
 
-         --OR--
+       --OR--
 
-         <basename> should be a bare source filename that will be extrapolated into real filenames
-                    (e.g. workflow.vwf <==> src/workflow.vwf src/workflow.cmt html/workflow.html)
+       <basename> should be a bare source filename that will be extrapolated
+                  into real filenames (e.g. workflow.vwf <==> src/workflow.vwf
+                  src/workflow.cmt html/workflow.html)
   
-         The comment XML may have a title attribute on the root element, the text of which
-         will be used as the title of the generated html page
+       The comment XML may have a title attribute on the root element, the text
+       of which will be used as the title of the generated html page
   
-         The generated XML will include links to jquery.js and a stylesheet
-         determined by the suffix of the source file"""
+       The generated XML will include links to jquery.js and a stylesheet
+       determined by the suffix of the source file"""
     exit(1)
   
   print >>stderr, "Initializing..."
