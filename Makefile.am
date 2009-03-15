@@ -1,5 +1,8 @@
 docdir = $(datadir)/doc/vertebra
-doc_DATA = src/README src/tex/vertebra.pdf
+hdocdir = $(docdir)/html
+
+doc_DATA = src/README src/tex/vertebra.pdf 
+hdoc_DATA = $(wildcard src/html/static/*) $(wildcard src/html/src/*.html)
 
 if BUILD_TEX
   BUILD_TEX=src/tex
