@@ -56,3 +56,8 @@ html body {
   margin-right: 1em;
   min-height: 1em;
 }
+
+.break {
+  min-height: 1em;
+}
+

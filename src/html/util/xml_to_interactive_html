@@ -70,34 +70,26 @@ def iostream(j):
     x = l[0]; del l[0]
     if x is BREAK: # Spacer for Line Break
       if l and l[0] is BREAK:
-        result.extend('<div class="break" style="min-height:1em;"></div>')
+        result.extend('<div class="break"></div>')
     elif isinstance(x, symbol):
       pass # Skip Unknown Sentinel Values
     else:
       result.append(x)
   return result
 
-def linify(text,delim='\n'):
+def linify(text,delim='\n',tail=False):
   if text is None or text == '':
     return
   first = True
   splt = text.split(delim)
-  mult = len(splt) > 1
-  if not splt[0].strip():
-    del splt[0]
-  if splt and not splt[-1].strip():
-    del splt[-1]
-    yield BREAK
   for line in splt:
-    if mult:
-      yield '<div class="cdata">'
-    yield escape(line)
     if first:
       first = False
     else:
       yield BREAK
-    if mult:
-      yield '</div>'
+    ln = escape(line)
+    if ln.strip():
+      yield ln
 
 def getrootlist(tr):
   root = tr.getroot()
@@ -131,7 +123,7 @@ def listify(el):
   elif isinstance(el.tag,StringTypes):
     kids = []
     att = el.attrib
-    ctext = 'class="element%s"'
+    ctext = 'class="element"'
     text = list(linify(el.text))
     for kid in el:
       kids.extend(listify(kid))
