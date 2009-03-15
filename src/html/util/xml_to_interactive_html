@@ -66,7 +66,6 @@ def iostream(j):
   result = []
   k = list(flatten(j)) # Flatten into single stream
   l = [x for x in k if x] # Filter out empty strings
-  print l
   while l:
     x = l[0]; del l[0]
     if x is BREAK: # Spacer for Line Break
