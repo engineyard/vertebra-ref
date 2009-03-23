@@ -27,7 +27,7 @@ there.  Try the following packages (note the variants!):
 
 * texlive_base +no_x11 (X11 never seems to build for me)
 * texlive +letter (to set the system page size to US Letter)
-* graphviz (for figures)
+* graphviz +no_x11 (for figures)
 
 You'll also need python with lxml.  Depending on the state of your system, you
 can use the command "sudo easy_install lxml".  If that doesn't work, you may
