@@ -36,4 +36,11 @@ There is also an html directory containing some stand-alone documentation that
 is better illustrated outside of the TeX sources.
 
 The src directory contains various utilities written to specifically generate
-documentation.
+documentation.  You will want the following ports to build it on a Mac:
+
+* python26
+
+Then you'll need lxml, which you can get by doing:
+
+sudo easy_install-2.6 lxml
+
