@@ -1,6 +1,8 @@
 Short Version
 =============
 
+Assuming you have the dependencies:
+
 # aclocal ; automake ; autoconf ; ./configure ; make ; sudo make install
 
 Will build all docs that it can.  Installs PDFs and HTML docs in:
@@ -14,33 +16,34 @@ The autoconf system currently creates a vertebra.pdf document that describes
 the overall design of Vertebra.  This document is built using TeX and a few
 support utilities for the figures (most notably GraphViz).  OmniGraffle source
 is included for some manually produced figures.  This manual is not yet
-considered comprehensive, nor complete, nor final.  The beginnings of work
-to generate HTML documentation are also present.
+considered comprehensive, nor complete, nor final.  The beginnings of work to
+generate HTML documentation are also present.
 
-To build the TeX docs on MacOS, use MacPorts.  Everything I needed was there.
-Try the following packages (note the variants!):
+MacOS X
+-------
+
+To build the docs on MacOS, use MacPorts.  Almost everything I needed was
+there.  Try the following packages (note the variants!):
 
 * texlive_base +no_x11 (X11 never seems to build for me)
 * texlive +letter (to set the system page size to US Letter)
 * graphviz (for figures)
 
-To build the TeX docs on Linux, you'll need some packages.  So far, I've tried
+You'll also need python with lxml.  Depending on the state of your system, you
+can use the command "sudo easy_install lxml".  If that doesn't work, you may
+need to install setuptools, which is available here:
+
+* http://peak.telecommunity.com/DevCenter/setuptools
+
+Linux
+-----
+
+To build the docs on Linux, you will need some packages.  So far, I've tried
 with Debian lenny.  I needed the following packages and their dependencies:
 
 * texlive-latex-recommended (for pdflatex and other basics)
 * texlive-latex-extra (for nomencl.sty)
 * texlive-latex-fonts-recommended (for pzdr font used by hyperref.sty)
 * ghostscript (for ps2pdf, since graphviz doesn't support PDF here)
-
-There is also an html directory containing some stand-alone documentation that
-is better illustrated outside of the TeX sources.
-
-The src directory contains various utilities written to specifically generate
-documentation.  You will want the following ports to build it on a Mac:
-
-* python26
-
-Then you'll need lxml, which you can get by doing:
-
-sudo easy_install-2.6 lxml
+* python-lxml (for HTML documentation)
 
